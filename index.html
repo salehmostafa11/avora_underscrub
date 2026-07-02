@@ -763,12 +763,62 @@
 }
     .section-title{justify-content:center; text-align:center; flex-direction:column;}
   }
+
+  .whatsapp-float{
+
+    position:fixed;
+
+    bottom:24px;
+
+    right:24px;
+
+    width:62px;
+
+    height:62px;
+
+    border-radius:50%;
+
+    background:#25D366;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    box-shadow:
+        0 10px 30px rgba(37,211,102,.35);
+
+    z-index:9999;
+
+    transition:.3s;
+
+}
+
+.whatsapp-float:hover{
+
+    transform:translateY(-5px) scale(1.08);
+
+    box-shadow:
+        0 18px 45px rgba(37,211,102,.5);
+
+}
+
+.whatsapp-float svg{
+
+    width:34px;
+
+    height:34px;
+
+}
 </style>
 </head>
 <body>
 
 <nav class="nav" id="nav">
-  <a href="https://wa.link/aruqr6" class="nav-cta en">ORDER NOW</a>
+  <a href="https://wa.link/aruqr6" class="nav-cta en" style="background-color: #25D366;">ORDER NOW</a>
   <div class="nav-logo en">AVORA</div>
 </nav>
 
@@ -934,7 +984,7 @@
         <div class="garment-image">
 
     <img
-        src="images/black/1.png"
+        src="images/black/1.webp"
         alt="AVORA Underscrub">
 
 </div>
@@ -1049,7 +1099,7 @@
     <div class="closing-logo en">AVORA</div>
     <div class="closing-tag en">. Confidence in Motion</div>
     <div class="closing-cta">
-      <a href="https://wa.link/aruqr6" class="btn btn-primary en">ORDER NOW</a>
+      <a href="https://wa.link/aruqr6" class="btn btn-primary en" style="background-color: #25D366; color: white;">ORDER NOW</a>
       <button class="btn btn-ghost en" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'})">BACK TO TOP</button>
     </div>
   </div>
@@ -1078,12 +1128,12 @@
   const productImages = {
 
     black: [
-        "images/black/1.png",
-        "images/black/2.png",
-        "images/black/3.png",
-        "images/black/4.png",
-        "images/black/5.png",
-        "images/black/6.png"
+        "images/black/1.webp",
+        "images/black/2.webp",
+        "images/black/3.webp",
+        "images/black/4.webp",
+        "images/black/5.webp",
+        "images/black/6.webp"
     ],
 
     white: [
@@ -1171,6 +1221,34 @@ function renderGallery(images){
 
 renderGallery(productImages.black);
 
+function preloadAllImages() {
+
+    const loaded = new Set();
+
+    Object.values(productImages).forEach(images => {
+
+        images.forEach(src => {
+
+            if (loaded.has(src)) return;
+
+            loaded.add(src);
+
+            const img = new Image();
+
+            img.src = src;
+
+        });
+
+    });
+
+}
+
+window.addEventListener("load", () => {
+
+    preloadAllImages();
+
+});
+
 document.querySelectorAll(".swatch").forEach(swatch=>{
 
     swatch.addEventListener("click",()=>{
@@ -1181,6 +1259,22 @@ document.querySelectorAll(".swatch").forEach(swatch=>{
 
 });
 </script>
+
+<a
+    href="https://wa.link/aruqr6"
+    class="whatsapp-float"
+    target="_blank"
+    aria-label="Order on WhatsApp">
+
+    <svg xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 32 32"
+         fill="currentColor">
+
+        <path d="M19.11 17.21c-.27-.14-1.58-.78-1.82-.87-.24-.09-.41-.14-.59.14-.17.27-.68.87-.83 1.05-.15.18-.3.2-.56.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.33-1.56-1.48-1.83-.15-.27-.02-.41.11-.54.12-.12.27-.31.41-.46.14-.15.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.59-1.42-.81-1.95-.21-.5-.42-.43-.59-.44h-.5c-.18 0-.47.07-.72.34-.24.27-.94.92-.94 2.24s.96 2.61 1.09 2.79c.14.18 1.89 2.88 4.58 4.04.64.28 1.15.45 1.54.58.65.21 1.24.18 1.7.11.52-.08 1.58-.65 1.8-1.27.22-.63.22-1.17.15-1.27-.06-.1-.24-.16-.51-.29z"/>
+        <path d="M16.02 3C8.84 3 3 8.73 3 15.8c0 2.5.74 4.93 2.13 7L3.74 29l6.39-1.37a13.1 13.1 0 0 0 5.89 1.4c7.18 0 13.02-5.73 13.02-12.8C29.04 8.73 23.2 3 16.02 3zm0 23.74a10.8 10.8 0 0 1-5.51-1.5l-.39-.23-3.79.81.81-3.69-.25-.38a10.5 10.5 0 0 1-1.65-5.63c0-5.93 4.84-10.76 10.78-10.76s10.78 4.83 10.78 10.76-4.84 10.62-10.78 10.62z"/>
+    </svg>
+
+</a>
 
 </body>
 </html>
