@@ -816,6 +816,76 @@
       min-height: 14px;
     }
 
+    /* ---------- Gender switch ---------- */
+    .gender-switch {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .gender-switch-track {
+      position: relative;
+      display: inline-flex;
+      background: var(--bg-elev);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      padding: 5px;
+      gap: 4px;
+    }
+
+    .gender-switch-track .glider {
+      position: absolute;
+      top: 5px;
+      bottom: 5px;
+      left: 5px;
+      width: calc(50% - 5px);
+      background: var(--accent);
+      border-radius: 999px;
+      transition: transform .3s ease;
+      z-index: 0;
+    }
+
+    html[dir="rtl"] .gender-switch-track .glider {
+      left: auto;
+      right: 5px;
+    }
+
+    .gender-switch-track.is-women .glider {
+      transform: translateX(-100%);
+    }
+
+    html[dir="rtl"] .gender-switch-track.is-women .glider {
+      transform: translateX(-100%);
+    }
+
+    .gender-btn {
+      position: relative;
+      z-index: 1;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 11px 34px;
+      border-radius: 999px;
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      transition: color .3s ease;
+    }
+
+    .gender-btn.active {
+      color: #08090a;
+    }
+
+    @media (max-width: 480px) {
+      .gender-btn {
+        padding: 10px 22px;
+        font-size: 11px;
+      }
+    }
+
     .colors-copy h3 {
       font-size: 22px;
       font-weight: 700;
@@ -1349,11 +1419,18 @@
         <div class="bar"></div>
         تنوع الألوان الفاخرة والتغليف الراقي
       </div>
+      <div class="gender-switch">
+        <div class="gender-switch-track" id="genderSwitchTrack">
+          <div class="glider"></div>
+          <button type="button" class="gender-btn active" id="menBtn" data-gender="men">MEN</button>
+          <button type="button" class="gender-btn" id="womenBtn" data-gender="women">WOMEN</button>
+        </div>
+      </div>
       <div class="colors-layout reveal">
         <div class="product-gallery">
 
           <div class="img-frame" id="mainImageFrame">
-            <img id="mainImage" src="images/black/1.jpg" alt="Product">
+            <img id="mainImage" src="images/men/black/1.webp" alt="Product">
             <div class="error-overlay"><span class="error-brand">AVORA</span></div>
           </div>
 
@@ -1705,71 +1782,30 @@
       });
     }, { threshold: 0.15 });
     revealEls.forEach(el => io.observe(el));
+    // Same color set for both genders. Men images live in images/men/<color>/
+    // and women images live in images/women/<color>/. Extensions kept as
+    // they were per color (black & white are .webp, the rest are .jpg).
+    const colorDefs = [
+      { name: "black", ext: "webp" },
+      { name: "white", ext: "webp" },
+      { name: "navy", ext: "jpg" },
+      { name: "light-olive", ext: "jpg" },
+      { name: "dark-olive", ext: "jpg" },
+      { name: "burgundy", ext: "jpg" },
+      { name: "royal-blue", ext: "jpg" }
+    ];
+
+    function buildColorImages(gender) {
+      const out = {};
+      colorDefs.forEach(({ name, ext }) => {
+        out[name] = [1, 2, 3, 4, 5, 6].map(n => `images/${gender}/${name}/${n}.${ext}`);
+      });
+      return out;
+    }
+
     const productImages = {
-
-      black: [
-        "images/black/1.webp",
-        "images/black/2.webp",
-        "images/black/3.webp",
-        "images/black/4.webp",
-        "images/black/5.webp",
-        "images/black/6.webp"
-      ],
-
-      white: [
-        "images/white/1.webp",
-        "images/white/2.webp",
-        "images/white/3.webp",
-        "images/white/4.webp",
-        "images/white/5.webp",
-        "images/white/6.webp"
-      ],
-
-      navy: [
-        "images/navy/1.jpg",
-        "images/navy/2.jpg",
-        "images/navy/3.jpg",
-        "images/navy/4.jpg",
-        "images/navy/5.jpg",
-        "images/navy/6.jpg"
-      ],
-
-      "light-olive": [
-        "images/light-olive/1.jpg",
-        "images/light-olive/2.jpg",
-        "images/light-olive/3.jpg",
-        "images/light-olive/4.jpg",
-        "images/light-olive/5.jpg",
-        "images/light-olive/6.jpg"
-      ],
-
-      "dark-olive": [
-        "images/dark-olive/1.jpg",
-        "images/dark-olive/2.jpg",
-        "images/dark-olive/3.jpg",
-        "images/dark-olive/4.jpg",
-        "images/dark-olive/5.jpg",
-        "images/dark-olive/6.jpg"
-      ],
-
-      burgundy: [
-        "images/burgundy/1.jpg",
-        "images/burgundy/2.jpg",
-        "images/burgundy/3.jpg",
-        "images/burgundy/4.jpg",
-        "images/burgundy/5.jpg",
-        "images/burgundy/6.jpg"
-      ],
-
-      "royal-blue": [
-        "images/royal-blue/1.jpg",
-        "images/royal-blue/2.jpg",
-        "images/royal-blue/3.jpg",
-        "images/royal-blue/4.jpg",
-        "images/royal-blue/5.jpg",
-        "images/royal-blue/6.jpg"
-      ]
-
+      men: buildColorImages("men"),
+      women: buildColorImages("women")
     };
 
     const mainImage = document.getElementById("mainImage");
@@ -1825,23 +1861,35 @@
 
     }
 
-    renderGallery(productImages.black);
+    // ---------- Gender (men / women) state ----------
+    let currentGender = "men";
+    let currentColor = "black";
+
+    function renderCurrentSelection() {
+      renderGallery(productImages[currentGender][currentColor]);
+    }
+
+    renderCurrentSelection();
 
     function preloadAllImages() {
 
       const loaded = new Set();
 
-      Object.values(productImages).forEach(images => {
+      Object.values(productImages).forEach(colorMap => {
 
-        images.forEach(src => {
+        Object.values(colorMap).forEach(images => {
 
-          if (loaded.has(src)) return;
+          images.forEach(src => {
 
-          loaded.add(src);
+            if (loaded.has(src)) return;
 
-          const img = new Image();
+            loaded.add(src);
 
-          img.src = src;
+            const img = new Image();
+
+            img.src = src;
+
+          });
 
         });
 
@@ -1859,11 +1907,34 @@
 
       swatch.addEventListener("click", () => {
 
-        renderGallery(productImages[swatch.dataset.color]);
+        currentColor = swatch.dataset.color;
+        renderCurrentSelection();
 
       });
 
     });
+
+    // ---------- Gender switch ----------
+    const genderSwitchTrack = document.getElementById("genderSwitchTrack");
+    const menBtn = document.getElementById("menBtn");
+    const womenBtn = document.getElementById("womenBtn");
+
+    function setGender(gender) {
+
+      if (gender === currentGender) return;
+
+      currentGender = gender;
+
+      genderSwitchTrack.classList.toggle("is-women", gender === "women");
+      menBtn.classList.toggle("active", gender === "men");
+      womenBtn.classList.toggle("active", gender === "women");
+
+      renderCurrentSelection();
+
+    }
+
+    menBtn.addEventListener("click", () => setGender("men"));
+    womenBtn.addEventListener("click", () => setGender("women"));
   </script>
 
   <a href="https://wa.link/aruqr6" class="whatsapp-float" target="_blank" aria-label="Order on WhatsApp">
