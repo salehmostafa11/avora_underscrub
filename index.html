@@ -1103,7 +1103,13 @@
       object-fit: cover;
       display: block;
       opacity: 1;
-      transition: opacity .3s ease;
+      transition: opacity .15s ease;
+    }
+
+    /* Fade the current photo out the instant a new one is requested,
+       so the old gender's photo never lingers while the new one loads. */
+    .img-frame.is-loading img {
+      opacity: 0;
     }
 
     /* Hide the broken-image icon/alt text and fade the img out on error */
@@ -1816,11 +1822,18 @@
     // placeholder in case this particular photo 404s.
     function setMainImage(src) {
       mainImageFrame.classList.remove("is-error");
+      mainImageFrame.classList.add("is-loading");
       mainImage.src = src;
     }
 
-    mainImage.onerror = () => mainImageFrame.classList.add("is-error");
-    mainImage.onload = () => mainImageFrame.classList.remove("is-error");
+    mainImage.onerror = () => {
+      mainImageFrame.classList.add("is-error");
+      mainImageFrame.classList.remove("is-loading");
+    };
+    mainImage.onload = () => {
+      mainImageFrame.classList.remove("is-error");
+      mainImageFrame.classList.remove("is-loading");
+    };
 
     function createThumb(src) {
 
@@ -1871,37 +1884,52 @@
 
     renderCurrentSelection();
 
-    function preloadAllImages() {
+    // Preload in priority order: the currently visible set is already
+    // requested by renderCurrentSelection(), so what matters most is
+    // getting the *other* gender's photos (the most likely next click)
+    // into the browser cache as fast as possible — well before the
+    // page's full "load" event, so switching feels instant.
+    function preloadImages(list) {
 
       const loaded = new Set();
 
-      Object.values(productImages).forEach(colorMap => {
+      list.forEach(src => {
 
-        Object.values(colorMap).forEach(images => {
+        if (loaded.has(src)) return;
 
-          images.forEach(src => {
+        loaded.add(src);
 
-            if (loaded.has(src)) return;
+        const img = new Image();
 
-            loaded.add(src);
-
-            const img = new Image();
-
-            img.src = src;
-
-          });
-
-        });
+        img.src = src;
 
       });
 
     }
 
-    window.addEventListener("load", () => {
+    function buildPreloadOrder() {
 
-      preloadAllImages();
+      const otherGender = currentGender === "men" ? "women" : "men";
+      const order = [];
 
-    });
+      // Same color, opposite gender — the most likely next click.
+      order.push(...productImages[otherGender][currentColor]);
+
+      // Remaining colors, opposite gender.
+      colorDefs.forEach(({ name }) => {
+        if (name !== currentColor) order.push(...productImages[otherGender][name]);
+      });
+
+      // Remaining colors, current gender (already partly cached via thumbnails).
+      colorDefs.forEach(({ name }) => {
+        if (name !== currentColor) order.push(...productImages[currentGender][name]);
+      });
+
+      return order;
+
+    }
+
+    preloadImages(buildPreloadOrder());
 
     document.querySelectorAll(".swatch").forEach(swatch => {
 
