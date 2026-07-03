@@ -979,21 +979,60 @@
 
     }
 
-    .product-gallery img {
-
+    /* ---- Image frame: fixed aspect-ratio so height never jumps,
+           whether the image loads, errors, or is still loading ---- */
+    .img-frame {
+      position: relative;
       width: 100%;
-
       max-width: 300px;
-      /* جرب 420 أو 400 أو 380 */
-
-      margin: auto;
-
-      display: block;
-
+      aspect-ratio: 4 / 5;
+      margin: 0 auto;
+      overflow: hidden;
       border-radius: 14px;
-
       border: 1px solid var(--border);
+      background: linear-gradient(160deg, var(--bg-elev), var(--bg-elev-2));
+    }
 
+    .img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 1;
+      transition: opacity .3s ease;
+    }
+
+    /* Hide the broken-image icon/alt text and fade the img out on error */
+    .img-frame.is-error img {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Frosted-glass placeholder shown only when the image fails to load */
+    .img-frame .error-overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(20, 24, 23, 0.45);
+      backdrop-filter: blur(20px) saturate(120%);
+      -webkit-backdrop-filter: blur(20px) saturate(120%);
+    }
+
+    .img-frame.is-error .error-overlay {
+      display: flex;
+    }
+
+    .error-overlay .error-brand {
+      font-family: "Fauna", 'Poppins', sans-serif;
+      font-size: 22px;
+      letter-spacing: 6px;
+      color: var(--text-primary);
+      opacity: 0.6;
+      filter: blur(0.4px);
+      text-shadow: 0 0 18px rgba(169, 201, 171, 0.35);
+      text-transform: uppercase;
     }
 
     .thumbnails {
@@ -1006,20 +1045,25 @@
 
     }
 
-    .thumbnails img {
-
+    .thumbnails .img-frame {
+      max-width: none;
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
       cursor: pointer;
-
       transition: .3s;
-
     }
 
-    .thumbnails img:hover {
+    .thumbnails .img-frame:hover {
 
       transform: scale(1.03);
 
       border-color: var(--accent);
 
+    }
+
+    .thumbnails .error-overlay .error-brand {
+      font-size: 11px;
+      letter-spacing: 2px;
     }
 
     /* ================= Responsive ================= */
@@ -1263,7 +1307,10 @@
       <div class="colors-layout reveal">
         <div class="product-gallery">
 
-          <img id="mainImage" src="images/black/1.jpg" alt="Product">
+          <div class="img-frame" id="mainImageFrame">
+            <img id="mainImage" src="images/black/1.jpg" alt="Product">
+            <div class="error-overlay"><span class="error-brand">AVORA</span></div>
+          </div>
 
           <div id="thumbnails" class="thumbnails"></div>
 
@@ -1283,11 +1330,11 @@
               <div class="swatch-label">NAVY</div>
             </div>
             <div>
-              <div class="swatch" style="background:#5c6b4a" data-color="light_olive" title="Light Olive"></div>
+              <div class="swatch" style="background:#5c6b4a" data-color="light-olive" title="Light Olive"></div>
               <div class="swatch-label">L. OLIVE</div>
             </div>
             <div>
-              <div class="swatch" style="background:#3c4a30" data-color="dark_olive" title="Dark Olive"></div>
+              <div class="swatch" style="background:#3c4a30" data-color="dark-olive" title="Dark Olive"></div>
               <div class="swatch-label">D. OLIVE</div>
             </div>
             <div>
@@ -1295,7 +1342,7 @@
               <div class="swatch-label">BURGUNDY</div>
             </div>
             <div>
-              <div class="swatch" style="background:#1e3a6e" data-color="royal_blue" title="Royal Blue"></div>
+              <div class="swatch" style="background:#1e3a6e" data-color="royal-blue" title="Royal Blue"></div>
               <div class="swatch-label">ROYAL BLUE</div>
             </div>
           </div>
@@ -1468,7 +1515,7 @@
               <ul>
                 <li>غسيل بحد أقصى 30°</li>
                 <li>مقلوبًا من الداخل</li>
-                <li>تجنب استخدام الكلور والعصر للحفاظ على جودة النسيج والمنتج</li>
+                <li>تجنب استخدام الكلور والعصر للحفاظ على جودة النسيج</li>
               </ul>
             </div>
 
@@ -1670,27 +1717,53 @@
     };
 
     const mainImage = document.getElementById("mainImage");
+    const mainImageFrame = document.getElementById("mainImageFrame");
     const thumbnails = document.getElementById("thumbnails");
+
+    // Swaps the main image's src and wires up the AVORA glass
+    // placeholder in case this particular photo 404s.
+    function setMainImage(src) {
+      mainImageFrame.classList.remove("is-error");
+      mainImage.src = src;
+    }
+
+    mainImage.onerror = () => mainImageFrame.classList.add("is-error");
+    mainImage.onload = () => mainImageFrame.classList.remove("is-error");
+
+    function createThumb(src) {
+
+      const frame = document.createElement("div");
+      frame.className = "img-frame";
+
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "Product thumbnail";
+
+      img.onerror = () => frame.classList.add("is-error");
+      img.onload = () => frame.classList.remove("is-error");
+
+      frame.appendChild(img);
+
+      const overlay = document.createElement("div");
+      overlay.className = "error-overlay";
+      overlay.innerHTML = '<span class="error-brand">AVORA</span>';
+      frame.appendChild(overlay);
+
+      frame.onclick = () => setMainImage(src);
+
+      return frame;
+
+    }
 
     function renderGallery(images) {
 
-      mainImage.src = images[0];
+      setMainImage(images[0]);
 
       thumbnails.innerHTML = "";
 
       images.forEach(image => {
 
-        const img = document.createElement("img");
-
-        img.src = image;
-
-        img.onclick = () => {
-
-          mainImage.src = image;
-
-        };
-
-        thumbnails.appendChild(img);
+        thumbnails.appendChild(createThumb(image));
 
       });
 
