@@ -1,1420 +1,1754 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AVORA — Confidence in Motion</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<style>
-
-@font-face {
-    font-family: "Fauna";
-    src: url("fonts/fauna-thin.ttf") format("truetype");
-    font-weight: 100;
-    font-style: normal;
-}
-.brand-logo{
-    font-family: "Fauna", serif;
-}
-
-  :root{
-    --bg:#08090a;
-    --bg-2:#0c0e0d;
-    --bg-elev:#111413;
-    --bg-elev-2:#141817;
-    --border:rgba(255,255,255,0.08);
-    --border-strong:rgba(255,255,255,0.14);
-    --text-primary:#f4f5f2;
-    --text-muted:#9a9d97;
-    --text-dim:#6c6f6a;
-    --accent:#a9c9ab;
-    --accent-2:#7fa383;
-    --accent-dim:rgba(169,201,171,0.14);
-    --accent-line:rgba(169,201,171,0.35);
-    --maxw:1180px;
-    --radius:14px;
-  }
-
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg);
-    color:var(--text-primary);
-    font-family:'Tajawal', sans-serif;
-    overflow-x:hidden;
-    line-height:1.7;
-  }
-  .en{
-    font-family:'Poppins', sans-serif;
-    direction:ltr;
-    unicode-bidi:isolate;
-  }
-
-  ::selection{background:var(--accent-dim);color:var(--accent);}
-
-  a{color:inherit;text-decoration:none;}
-
-  /* ---------- Ambient background glows ---------- */
-  .glow{
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    overflow:hidden;
-    z-index:0;
-  }
-  .glow::before{
-    content:'';
-    position:absolute;
-    width:900px;height:900px;
-    left:-300px; top:-200px;
-    background:radial-gradient(circle, rgba(122,163,131,0.16) 0%, rgba(122,163,131,0) 65%);
-    border-radius:50%;
-  }
-  .glow.right::before{ left:auto; right:-300px; top:auto; bottom:-250px;}
-
-  /* ---------- Layout helpers ---------- */
-  section{
-    position:relative;
-    padding:120px 32px;
-    overflow:hidden;
-  }
-  .wrap{
-    max-width:var(--maxw);
-    margin:0 auto;
-    position:relative;
-    z-index:1;
-  }
-  .eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:11px;
-    letter-spacing:3px;
-    color:var(--accent);
-    background:rgba(255,255,255,0.03);
-    border:1px solid var(--border-strong);
-    padding:9px 20px;
-    border-radius:999px;
-    text-transform:uppercase;
-  }
-  .section-title{
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:14px;
-    font-size:clamp(22px,3vw,34px);
-    font-weight:800;
-    margin-bottom:56px;
-    text-align:right;
-  }
-  .section-title .bar{
-    width:3px;
-    height:32px;
-    background:var(--accent);
-    flex-shrink:0;
-    border-radius:2px;
-  }
-  .section-title .en-part{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-weight:500;
-    color:var(--text-primary);
-  }
-
-  .divider-line{
-    width:70px;
-    height:1px;
-    background:linear-gradient(90deg, transparent, var(--accent-line), transparent);
-    margin:28px auto;
-  }
-
-  /* ---------- Reveal on scroll ---------- */
-  .reveal{
-    opacity:0;
-    transform:translateY(24px);
-    transition:opacity .8s ease, transform .8s ease;
-  }
-  .reveal.in{
-    opacity:1;
-    transform:translateY(0);
-  }
-  .reveal-stagger > *{
-    opacity:0;
-    transform:translateY(20px);
-    transition:opacity .7s ease, transform .7s ease;
-  }
-  .reveal-stagger.in > *{
-    opacity:1;
-    transform:translateY(0);
-  }
-  .reveal-stagger.in > *:nth-child(1){transition-delay:.05s;}
-  .reveal-stagger.in > *:nth-child(2){transition-delay:.15s;}
-  .reveal-stagger.in > *:nth-child(3){transition-delay:.25s;}
-  .reveal-stagger.in > *:nth-child(4){transition-delay:.35s;}
-
-  @media (prefers-reduced-motion: reduce){
-    .reveal, .reveal-stagger > *{transition:none; opacity:1; transform:none;}
-    html{scroll-behavior:auto;}
-  }
-
-  /* ---------- Nav ---------- */
-  .nav{
-    position:fixed;
-    top:0; left:0; right:0;
-    z-index:50;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:20px 40px;
-    background:rgba(8,9,10,0.7);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid transparent;
-    transition:border-color .3s ease, background .3s ease;
-  }
-  .nav.scrolled{
-    border-bottom-color:var(--border);
-    background:rgba(8,9,10,0.88);
-  }
-  .nav-logo{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:19px;
-    font-weight:400;
-    letter-spacing:7px;
-  }
-  .nav-cta{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:12px;
-    letter-spacing:1.5px;
-    border:1px solid var(--border-strong);
-    padding:9px 20px;
-    border-radius:999px;
-    transition:all .25s ease;
-  }
-  .nav-cta:hover{border-color:var(--accent-line); color:var(--accent); background:var(--accent-dim);}
-
-  /* ================= HERO ================= */
-  .hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:160px 24px 100px;
-  }
-  .hero .wrap{display:flex; flex-direction:column; align-items:center;}
-  .hero-badge{margin-bottom:40px;}
-.hero-logo{
-    font-family:"Fauna", serif;
-
-    direction:ltr;
-
-    font-size:clamp(52px,10vw,110px);
-
-    font-weight:100;
-
-    letter-spacing:clamp(14px,3vw,34px);
-
-    display:flex;
-
-    justify-content:center;
-
-    opacity:0;
-
-    animation:logoIn 1.4s cubic-bezier(.16,1,.3,1) .3s forwards;
-}
-  @keyframes logoIn{
-    from{opacity:0; letter-spacing:2px; filter:blur(6px);}
-    to{opacity:1; letter-spacing:clamp(14px,3vw,34px); filter:blur(0);}
-  }
-  .hero-tag{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:14px;
-    letter-spacing:6px;
-    color:var(--accent);
-    margin-top:28px;
-    text-transform:uppercase;
-  }
-  .hero-sub{
-    max-width:640px;
-    margin-top:32px;
-    font-size:clamp(16px,2vw,19px);
-    color:var(--text-muted);
-    line-height:1.9;
-  }
-  .hero-scroll{
-    margin-top:80px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:10px;
-    color:var(--text-dim);
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:10px;
-    letter-spacing:3px;
-  }
-  .hero-scroll .line{
-    width:1px;
-    height:34px;
-    background:linear-gradient(180deg, var(--accent-line), transparent);
-    animation:scrollLine 2s ease-in-out infinite;
-  }
-  @keyframes scrollLine{
-    0%,100%{transform:scaleY(1); opacity:.6;}
-    50%{transform:scaleY(0.6); opacity:1;}
-  }
-
-  /* ================= TITLE SLIDES (philosophy / product intro) ================= */
-  .title-slide{
-    min-height:60vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-  }
-  .title-slide .wrap{display:flex; flex-direction:column; align-items:center;}
-  .title-slide h2{
-    font-size:clamp(30px,5vw,52px);
-    font-weight:800;
-  }
-  .title-slide .en-sub{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    color:var(--text-muted);
-    font-size:clamp(15px,2vw,20px);
-    font-weight:300;
-    margin-top:18px;
-    letter-spacing:.5px;
-  }
-
-  /* ================= QUOTE ================= */
-  .quote-section{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-height:50vh;
-    text-align:center;
-  }
-  .quote-mark{
-    font-family:'Poppins',sans-serif;
-    font-size:80px;
-    color:var(--accent-dim);
-    line-height:0;
-    margin-bottom:10px;
-  }
-  blockquote{
-    font-size:clamp(19px,2.6vw,29px);
-    font-weight:500;
-    max-width:840px;
-    color:var(--text-primary);
-  }
-  .quote-attr{
-    margin-top:30px;
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    letter-spacing:3px;
-    font-size:12px;
-    color:var(--accent);
-    text-transform:uppercase;
-  }
-
-  /* ================= CARDS GRID (mission/vision, values) ================= */
-  .grid-2{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:24px;
-  }
-  .grid-3{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:24px;
-  }
-  .card{
-    background:var(--bg-elev);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:38px 34px;
-    text-align:right;
-    position:relative;
-    transition:transform .35s ease, border-color .35s ease, background .35s ease;
-  }
-  .card::before{
-    content:'';
-    position:absolute;
-    top:0; right:0;
-    width:3px; height:0;
-    background:var(--accent);
-    border-radius:2px;
-    transition:height .4s ease;
-  }
-  .card:hover{
-    transform:translateY(-6px);
-    border-color:var(--border-strong);
-    background:var(--bg-elev-2);
-  }
-  .card:hover::before{height:100%;}
-  .card h3{
-    font-size:20px;
-    font-weight:700;
-    margin-bottom:16px;
-  }
-  .card p{
-    color:var(--text-muted);
-    font-size:15px;
-  }
-  .card .icon{
-    width:44px;height:44px;
-    display:flex; align-items:center; justify-content:center;
-    background:var(--accent-dim);
-    border-radius:10px;
-    margin-bottom:22px;
-    color:var(--accent);
-    margin-right:auto;
-  }
-  .card .icon svg{width:20px;height:20px;}
-
-  /* ================= PRODUCT FEATURE (image + copy) ================= */
-  .feature{
-    display:grid;
-    grid-template-columns:0.9fr 1.1fr;
-    gap:70px;
-    align-items:center;
-  }
-  .garment-visual{
-    background:linear-gradient(160deg,#191c1a,#0c0e0d);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:40px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:26px;
-  }
-  .garment-image{
-
-    width:100%;
-
-    display:flex;
-
-    justify-content:center;
-
-}
-
-.garment-image img{
-
-    width:100%;
-
-    max-width:300px;
-
-    border-radius:18px;
-
-    object-fit:cover;
-
-    border:1px solid var(--border);
-
-    box-shadow:0 25px 60px rgba(0,0,0,.45);
-
-}
-  .garment-tags{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    width:100%;
-  }
-  .garment-tags span{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:9px;
-    letter-spacing:1px;
-    text-align:center;
-    color:var(--text-dim);
-    border:1px solid var(--border);
-    border-radius:6px;
-    padding:8px 4px;
-  }
-  .feature-copy h3{
-    font-size:24px;
-    font-weight:700;
-    margin-bottom:20px;
-    text-align:right;
-  }
-  .feature-copy > p{
-    color:var(--text-muted);
-    margin-bottom:26px;
-    text-align:right;
-  }
-  .check-list{list-style:none; display:flex; flex-direction:column; gap:16px;}
-  .check-list li{
-    display:flex;
-    align-items:flex-start;
-    gap:14px;
-    justify-content:flex-end;
-    text-align:right;
-    color:var(--text-primary);
-    font-size:15px;
-  }
-  .check-list li .tick{
-    flex-shrink:0;
-    width:22px;height:22px;
-    border-radius:50%;
-    background:var(--accent-dim);
-    color:var(--accent);
-    display:flex;align-items:center;justify-content:center;
-    font-size:12px;
-    margin-top:2px;
-  }
-
-  /* ================= SPECS (big number) ================= */
-  .specs{
-    display:grid;
-    grid-template-columns:1.2fr 0.8fr;
-    gap:40px;
-    align-items:center;
-  }
-  .specs-copy h3{font-size:22px; font-weight:700; margin-bottom:18px; text-align:right;}
-  .specs-copy > p{color:var(--text-muted); margin-bottom:24px; text-align:right;}
-  .dot-list{list-style:none; display:flex; flex-direction:column; gap:14px;}
-  .dot-list li{
-    display:flex; align-items:flex-start; gap:14px; justify-content:flex-end;
-    text-align:right; font-size:15px; color:var(--text-primary);
-  }
-  .dot-list li .dot{
-    width:9px;height:9px; border-radius:50%; background:var(--accent);
-    margin-top:8px; flex-shrink:0;
-  }
-  .big-number{
-    text-align:center;
-    border-right:1px solid var(--border);
-    padding-right:40px;
-  }
-  .big-number .num{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:clamp(70px,9vw,120px);
-    font-weight:300;
-    line-height:1;
-    background:linear-gradient(180deg,#fff,var(--accent) 140%);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-  }
-  .big-number .label{
-    margin-top:14px;
-    color:var(--text-muted);
-    font-size:14px;
-  }
-  @media (max-width:760px){
-    .big-number{border-right:none; border-top:1px solid var(--border); padding-right:0; padding-top:30px;}
-  }
-
-  /* ================= AUDIENCE PHASES ================= */
-  .audience-card{
-    background:var(--bg-elev);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:38px 34px;
-    text-align:right;
-  }
-  .audience-card h3{
-    display:flex; align-items:center; justify-content:flex-end; gap:12px;
-    font-size:19px; font-weight:700; margin-bottom:18px;
-  }
-  .audience-card h3 .badge{
-    width:38px;height:38px;
-    border-radius:10px;
-    background:var(--accent-dim);
-    color:var(--accent);
-    display:flex; align-items:center; justify-content:center;
-    font-size:16px;
-  }
-  .audience-card p{color:var(--text-muted); font-size:15px;}
-
-  /* ================= COLORS & PACKAGING ================= */
-  .colors-layout{
-    display:grid;
-    grid-template-columns:0.85fr 1.15fr;
-    gap:70px;
-    align-items:center;
-  }
-  .color-swatch-panel{
-    background:var(--bg-elev);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:36px;
-  }
-  .swatch-row{
-    display:flex;
-    gap:14px;
-    flex-wrap:wrap;
-    justify-content:center;
-    margin-bottom:26px;
-  }
-  .swatch{
-    width:42px;height:42px;
-    border-radius:50%;
-    border:2px solid rgba(255,255,255,0.15);
-    cursor:pointer;
-    transition:transform .25s ease, border-color .25s ease;
-    position:relative;
-  }
-  .swatch:hover{transform:translateY(-4px) scale(1.06); border-color:var(--accent);}
-  .swatch-label{
-    text-align:center;
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:10px;
-    letter-spacing:1px;
-    color:var(--text-dim);
-    margin-top:10px;
-    min-height:14px;
-  }
-  .colors-copy h3{font-size:22px; font-weight:700; margin-bottom:16px; text-align:right;}
-  .colors-copy > p{color:var(--text-muted); margin-bottom:24px; text-align:right;}
-  .package-notes{display:flex; flex-direction:column; gap:16px;}
-  .package-notes .note{
-    display:flex; gap:14px; justify-content:flex-end; text-align:right;
-    background:var(--bg-elev);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:16px 18px;
-    font-size:14px;
-    color:var(--text-muted);
-  }
-  .package-notes .note .n-icon{color:var(--accent); flex-shrink:0;}
-
-  /* ================= ROADMAP ================= */
-  .roadmap-track{
-    position:relative;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
-  }
-  .roadmap-track::before{
-    content:'';
-    position:absolute;
-    top:9px; left:0; right:0;
-    height:1px;
-    background:linear-gradient(90deg, transparent, var(--border-strong) 10%, var(--border-strong) 90%, transparent);
-  }
-  .phase{
-    text-align:center;
-    position:relative;
-    padding-top:34px;
-  }
-  .phase .node{
-    position:absolute;
-    top:0; left:50%;
-    transform:translateX(-50%);
-    width:19px;height:19px;
-    border-radius:50%;
-    background:var(--bg);
-    border:2px solid var(--accent);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .phase .node::after{
-    content:'';
-    width:7px;height:7px;
-    border-radius:50%;
-    background:var(--accent);
-  }
-  .phase .en-phase{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:12px;
-    letter-spacing:2px;
-    color:var(--accent);
-    text-transform:uppercase;
-    margin-bottom:8px;
-  }
-  .phase h4{font-size:17px; font-weight:700; margin-bottom:12px;}
-  .phase p{font-size:13.5px; color:var(--text-muted);}
-
-  /* ================= CLOSING ================= */
-  .closing{
-    min-height:70vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-  }
-  .closing .wrap{display:flex; flex-direction:column; align-items:center;}
-  .closing-logo{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:clamp(40px,7vw,72px);
-    font-weight:300;
-    letter-spacing:clamp(10px,2.4vw,24px);
-  }
-  .closing-tag{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:13px;
-    letter-spacing:5px;
-    color:var(--accent);
-    text-transform:uppercase;
-    margin-top:24px;
-  }
-  .closing-cta{
-    margin-top:48px;
-    display:flex;
-    gap:16px;
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-  .btn{
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:13px;
-    letter-spacing:1.5px;
-    padding:15px 34px;
-    border-radius:999px;
-    transition:all .3s ease;
-    cursor:pointer;
-    border:1px solid transparent;
-  }
-  .btn-primary{
-    background:var(--accent);
-    color:#0a0b0a;
-    font-weight:600;
-  }
-  .btn-primary:hover{
-    background:#bcd9be;
-    transform:translateY(-2px);
-  }
-  .btn-ghost{
-    border-color:var(--border-strong);
-    color:var(--accent);
-  }
-  .btn-ghost:hover{
-    border-color:var(--accent-line);
-    color:var(--accent);
-  }
-
-  footer{
-    padding:36px 32px;
-    text-align:center;
-    color:var(--text-dim);
-    font-family:'Poppins',sans-serif;
-    direction:ltr;
-    font-size:12px;
-    border-top:1px solid var(--border);
-  }
-  .product-gallery{
-
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-
-}
-
-.product-gallery img{
-
-    width:100%;
-
-    max-width:300px;   /* جرب 420 أو 400 أو 380 */
-
-    margin:auto;
-
-    display:block;
-
-    border-radius:14px;
-
-    border:1px solid var(--border);
-
-}
-
-.thumbnails{
-
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:12px;
-
-}
-
-.thumbnails img{
-
-    cursor:pointer;
-
-    transition:.3s;
-
-}
-
-.thumbnails img:hover{
-
-    transform:scale(1.03);
-
-    border-color:var(--accent);
-
-}
-  /* ================= Responsive ================= */
-  @media (max-width:900px){
-    .grid-2,.grid-3{grid-template-columns:1fr;}
-    .feature{grid-template-columns:1fr; gap:40px;}
-    .specs{grid-template-columns:1fr;}
-    .colors-layout{grid-template-columns:1fr;}
-    .roadmap-track{grid-template-columns:1fr 1fr; row-gap:50px;}
-  }
-  @media (max-width:560px){
-    section{padding:80px 20px;}
-    .roadmap-track{grid-template-columns:1fr;}
-    .roadmap-track::before{display:none;}
-    .nav{padding:16px 20px;}
-    /* .nav-cta{display:none;} */
-    .nav-cta{
-
-    display:inline-flex;
-
-    padding:8px 14px;
-
-    font-size:10px;
-
-    letter-spacing:1px;
-
-}
-    .section-title{justify-content:center; text-align:center; flex-direction:column;}
-  }
-
-  .whatsapp-float{
-
-    position:fixed;
-
-    bottom:24px;
-
-    right:24px;
-
-    width:62px;
-
-    height:62px;
-
-    border-radius:50%;
-
-    background:#25D366;
-
-    color:white;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    box-shadow:
-        0 10px 30px rgba(37,211,102,.35);
-
-    z-index:9999;
-
-    transition:.3s;
-
-}
-
-.whatsapp-float:hover{
-
-    transform:translateY(-5px) scale(1.08);
-
-    box-shadow:
-        0 18px 45px rgba(37,211,102,.5);
-
-}
-
-.whatsapp-float svg{
-
-    width:34px;
-
-    height:34px;
-
-}
-@media (max-width:768px){
-
-    .whatsapp-float{
-
-        width:56px;
-
-        height:56px;
-
-        right:18px;
-
-        bottom:18px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVORA — Confidence in Motion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    @font-face {
+      font-family: "Fauna";
+      src: url("fonts/fauna-thin.ttf") format("truetype");
+      font-weight: 100;
+      font-style: normal;
+    }
+
+    .brand-logo {
+      font-family: "Fauna", serif;
+    }
+
+    :root {
+      --bg: #08090a;
+      --bg-2: #0c0e0d;
+      --bg-elev: #111413;
+      --bg-elev-2: #141817;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --text-primary: #f4f5f2;
+      --text-muted: #9a9d97;
+      --text-dim: #6c6f6a;
+      --accent: #a9c9ab;
+      --accent-2: #7fa383;
+      --accent-dim: rgba(169, 201, 171, 0.14);
+      --accent-line: rgba(169, 201, 171, 0.35);
+      --maxw: 1180px;
+      --radius: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Tajawal', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    .en {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    ::selection {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ---------- Ambient background glows ---------- */
+    .glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .glow::before {
+      content: '';
+      position: absolute;
+      width: 900px;
+      height: 900px;
+      left: -300px;
+      top: -200px;
+      background: radial-gradient(circle, rgba(122, 163, 131, 0.16) 0%, rgba(122, 163, 131, 0) 65%);
+      border-radius: 50%;
+    }
+
+    .glow.right::before {
+      left: auto;
+      right: -300px;
+      top: auto;
+      bottom: -250px;
+    }
+
+    /* ---------- Layout helpers ---------- */
+    section {
+      position: relative;
+      padding: 120px 32px;
+      overflow: hidden;
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-strong);
+      padding: 9px 20px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 14px;
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 800;
+      margin-bottom: 56px;
+      text-align: right;
+    }
+
+    .section-title .bar {
+      width: 3px;
+      height: 32px;
+      background: var(--accent);
+      flex-shrink: 0;
+      border-radius: 2px;
+    }
+
+    .section-title .en-part {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .divider-line {
+      width: 70px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-line), transparent);
+      margin: 28px auto;
+    }
+
+    /* ---------- Reveal on scroll ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-stagger>* {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal-stagger.in>* {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-stagger.in>*:nth-child(1) {
+      transition-delay: .05s;
+    }
+
+    .reveal-stagger.in>*:nth-child(2) {
+      transition-delay: .15s;
+    }
+
+    .reveal-stagger.in>*:nth-child(3) {
+      transition-delay: .25s;
+    }
+
+    .reveal-stagger.in>*:nth-child(4) {
+      transition-delay: .35s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .reveal,
+      .reveal-stagger>* {
+        transition: none;
+        opacity: 1;
+        transform: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ---------- Nav ---------- */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(8, 9, 10, 0.7);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s ease, background .3s ease;
+    }
+
+    .nav.scrolled {
+      border-bottom-color: var(--border);
+      background: rgba(8, 9, 10, 0.88);
+    }
+
+    .nav-logo {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 19px;
+      font-weight: 400;
+      letter-spacing: 7px;
+    }
+
+    .nav-cta {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      border: 1px solid var(--border-strong);
+      padding: 9px 20px;
+      border-radius: 999px;
+      transition: all .25s ease;
+    }
+
+    .nav-cta:hover {
+      border-color: var(--accent-line);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* ================= HERO ================= */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 160px 24px 100px;
+    }
+
+    .hero .wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-badge {
+      margin-bottom: 40px;
+    }
+
+    .hero-logo {
+      font-family: "Fauna", serif;
+
+      direction: ltr;
+
+      font-size: clamp(52px, 10vw, 110px);
+
+      font-weight: 100;
+
+      letter-spacing: clamp(14px, 3vw, 34px);
+
+      display: flex;
+
+      justify-content: center;
+
+      opacity: 0;
+
+      animation: logoIn 1.4s cubic-bezier(.16, 1, .3, 1) .3s forwards;
+    }
+
+    @keyframes logoIn {
+      from {
+        opacity: 0;
+        letter-spacing: 2px;
+        filter: blur(6px);
+      }
+
+      to {
+        opacity: 1;
+        letter-spacing: clamp(14px, 3vw, 34px);
+        filter: blur(0);
+      }
+    }
+
+    .hero-tag {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 14px;
+      letter-spacing: 6px;
+      color: var(--accent);
+      margin-top: 28px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      max-width: 640px;
+      margin-top: 32px;
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-muted);
+      line-height: 1.9;
+    }
+
+    .hero-scroll {
+      margin-top: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-dim);
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 10px;
+      letter-spacing: 3px;
+    }
+
+    .hero-scroll .line {
+      width: 1px;
+      height: 34px;
+      background: linear-gradient(180deg, var(--accent-line), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+
+      0%,
+      100% {
+        transform: scaleY(1);
+        opacity: .6;
+      }
+
+      50% {
+        transform: scaleY(0.6);
+        opacity: 1;
+      }
+    }
+
+    /* ================= TITLE SLIDES (philosophy / product intro) ================= */
+    .title-slide {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .title-slide .wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .title-slide h2 {
+      font-size: clamp(30px, 5vw, 52px);
+      font-weight: 800;
+    }
+
+    .title-slide .en-sub {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      color: var(--text-muted);
+      font-size: clamp(15px, 2vw, 20px);
+      font-weight: 300;
+      margin-top: 18px;
+      letter-spacing: .5px;
+    }
+
+    /* ================= QUOTE ================= */
+    .quote-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50vh;
+      text-align: center;
+    }
+
+    .quote-mark {
+      font-family: 'Poppins', sans-serif;
+      font-size: 80px;
+      color: var(--accent-dim);
+      line-height: 0;
+      margin-bottom: 10px;
+    }
+
+    blockquote {
+      font-size: clamp(19px, 2.6vw, 29px);
+      font-weight: 500;
+      max-width: 840px;
+      color: var(--text-primary);
+    }
+
+    .quote-attr {
+      margin-top: 30px;
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      letter-spacing: 3px;
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    /* ================= CARDS GRID (mission/vision, values) ================= */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 38px 34px;
+      text-align: right;
+      position: relative;
+      transition: transform .35s ease, border-color .35s ease, background .35s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 3px;
+      height: 0;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: height .4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-strong);
+      background: var(--bg-elev-2);
+    }
+
+    .card:hover::before {
+      height: 100%;
+    }
+
+    .card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    .card .icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-dim);
+      border-radius: 10px;
+      margin-bottom: 22px;
+      color: var(--accent);
+      margin-right: auto;
+    }
+
+    .card .icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ================= PRODUCT FEATURE (image + copy) ================= */
+    .feature {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .garment-visual {
+      background: linear-gradient(160deg, #191c1a, #0c0e0d);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .garment-image {
+
+      width: 100%;
+
+      display: flex;
+
+      justify-content: center;
 
     }
 
-    .whatsapp-float svg{
+    .garment-image img {
 
-        width:30px;
+      width: 100%;
 
-        height:30px;
+      max-width: 300px;
 
-    }
+      border-radius: 18px;
 
-}
-@keyframes whatsappPulse{
+      object-fit: cover;
 
-    0%,100%{
+      border: 1px solid var(--border);
 
-        transform:scale(1);
-
-    }
-
-    50%{
-
-        transform:scale(1.08);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, .45);
 
     }
 
-}
+    .garment-tags {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
 
-.whatsapp-float{
+    .garment-tags span {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-align: center;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 4px;
+    }
 
-    animation:whatsappPulse 2.5s infinite;
+    .feature-copy h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-align: right;
+    }
 
-}
-.warning-note{
+    .feature-copy>p {
+      color: var(--text-muted);
+      margin-bottom: 26px;
+      text-align: right;
+    }
 
-    display:flex;
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-    align-items:flex-start;
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      justify-content: flex-end;
+      text-align: right;
+      color: var(--text-primary);
+      font-size: 15px;
+    }
 
-    gap:14px;
+    .check-list li .tick {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin-top: 2px;
+    }
 
-    margin-top:18px;
+    /* ================= SPECS (big number) ================= */
+    .specs {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+    }
 
-    padding:18px 20px;
+    .specs-copy h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      text-align: right;
+    }
 
-    border:1px solid rgba(255,193,7,.25);
+    .specs-copy>p {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      text-align: right;
+    }
 
-    border-right:4px solid #FFC107;
+    .dot-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
 
-    background:rgba(255,193,7,.08);
+    .dot-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      justify-content: flex-end;
+      text-align: right;
+      font-size: 15px;
+      color: var(--text-primary);
+    }
 
-    border-radius:12px;
+    .dot-list li .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
 
-}
+    .big-number {
+      text-align: center;
+      border-right: 1px solid var(--border);
+      padding-right: 40px;
+    }
 
-.warning-icon{
+    .big-number .num {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: clamp(70px, 9vw, 120px);
+      font-weight: 300;
+      line-height: 1;
+      background: linear-gradient(180deg, #fff, var(--accent) 140%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-    color:#FFC107;
+    .big-number .label {
+      margin-top: 14px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
 
-    font-size:22px;
+    @media (max-width:760px) {
+      .big-number {
+        border-right: none;
+        border-top: 1px solid var(--border);
+        padding-right: 0;
+        padding-top: 30px;
+      }
+    }
 
-    flex-shrink:0;
+    /* ================= AUDIENCE PHASES ================= */
+    .audience-card {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 38px 34px;
+      text-align: right;
+    }
 
-    line-height:1;
+    .audience-card h3 {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
 
-}
+    .audience-card h3 .badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
 
-.warning-text{
+    .audience-card p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
 
-    color:#f5f5f5;
+    /* ================= COLORS & PACKAGING ================= */
+    .colors-layout {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 70px;
+      align-items: center;
+    }
 
-    font-size:14px;
+    .color-swatch-panel {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+    }
 
-    line-height:1.8;
+    .swatch-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 26px;
+    }
 
-}
-</style>
+    .swatch {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: transform .25s ease, border-color .25s ease;
+      position: relative;
+    }
+
+    .swatch:hover {
+      transform: translateY(-4px) scale(1.06);
+      border-color: var(--accent);
+    }
+
+    .swatch-label {
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      margin-top: 10px;
+      min-height: 14px;
+    }
+
+    .colors-copy h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-align: right;
+    }
+
+    .colors-copy>p {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      text-align: right;
+    }
+
+    .package-notes {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .package-notes .note {
+      display: flex;
+      gap: 14px;
+      justify-content: flex-end;
+      text-align: right;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .package-notes .note .n-icon {
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ================= ROADMAP ================= */
+    .roadmap-track {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .roadmap-track::before {
+      content: '';
+      position: absolute;
+      top: 9px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-strong) 10%, var(--border-strong) 90%, transparent);
+    }
+
+    .phase {
+      text-align: center;
+      position: relative;
+      padding-top: 34px;
+    }
+
+    .phase .node {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phase .node::after {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .phase .en-phase {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .phase h4 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .phase p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+
+    /* ================= CLOSING ================= */
+    .closing {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .closing .wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .closing-logo {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 300;
+      letter-spacing: clamp(10px, 2.4vw, 24px);
+    }
+
+    .closing-tag {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 13px;
+      letter-spacing: 5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-top: 24px;
+    }
+
+    .closing-cta {
+      margin-top: 48px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      padding: 15px 34px;
+      border-radius: 999px;
+      transition: all .3s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0b0a;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background: #bcd9be;
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      border-color: var(--border-strong);
+      color: var(--accent);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent-line);
+      color: var(--accent);
+    }
+
+    footer {
+      padding: 36px 32px;
+      text-align: center;
+      color: var(--text-dim);
+      font-family: 'Poppins', sans-serif;
+      direction: ltr;
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .product-gallery {
+
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+
+    }
+
+    .product-gallery img {
+
+      width: 100%;
+
+      max-width: 300px;
+      /* جرب 420 أو 400 أو 380 */
+
+      margin: auto;
+
+      display: block;
+
+      border-radius: 14px;
+
+      border: 1px solid var(--border);
+
+    }
+
+    .thumbnails {
+
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 12px;
+
+    }
+
+    .thumbnails img {
+
+      cursor: pointer;
+
+      transition: .3s;
+
+    }
+
+    .thumbnails img:hover {
+
+      transform: scale(1.03);
+
+      border-color: var(--accent);
+
+    }
+
+    /* ================= Responsive ================= */
+    @media (max-width:900px) {
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .feature {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .specs {
+        grid-template-columns: 1fr;
+      }
+
+      .colors-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .roadmap-track {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 50px;
+      }
+    }
+
+    @media (max-width:560px) {
+      section {
+        padding: 80px 20px;
+      }
+
+      .roadmap-track {
+        grid-template-columns: 1fr;
+      }
+
+      .roadmap-track::before {
+        display: none;
+      }
+
+      .nav {
+        padding: 16px 20px;
+      }
+
+      /* .nav-cta{display:none;} */
+      .nav-cta {
+
+        display: inline-flex;
+
+        padding: 8px 14px;
+
+        font-size: 10px;
+
+        letter-spacing: 1px;
+
+      }
+
+      .section-title {
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+      }
+    }
+
+    .whatsapp-float {
+
+      position: fixed;
+
+      bottom: 24px;
+
+      right: 24px;
+
+      width: 62px;
+
+      height: 62px;
+
+      border-radius: 50%;
+
+      background: #25D366;
+
+      color: white;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      box-shadow:
+        0 10px 30px rgba(37, 211, 102, .35);
+
+      z-index: 9999;
+
+      transition: .3s;
+
+    }
+
+    .whatsapp-float:hover {
+
+      transform: translateY(-5px) scale(1.08);
+
+      box-shadow:
+        0 18px 45px rgba(37, 211, 102, .5);
+
+    }
+
+    .whatsapp-float svg {
+
+      width: 34px;
+
+      height: 34px;
+
+    }
+
+    @media (max-width:768px) {
+
+      .whatsapp-float {
+
+        width: 56px;
+
+        height: 56px;
+
+        right: 18px;
+
+        bottom: 18px;
+
+      }
+
+      .whatsapp-float svg {
+
+        width: 30px;
+
+        height: 30px;
+
+      }
+
+    }
+
+    @keyframes whatsappPulse {
+
+      0%,
+      100% {
+
+        transform: scale(1);
+
+      }
+
+      50% {
+
+        transform: scale(1.08);
+
+      }
+
+    }
+
+    .whatsapp-float {
+
+      animation: whatsappPulse 2.5s infinite;
+
+    }
+
+    .warning-note {
+
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 14px;
+
+      margin-top: 18px;
+
+      padding: 18px 20px;
+
+      border: 1px solid rgba(255, 193, 7, .25);
+
+      border-right: 4px solid #FFC107;
+
+      background: rgba(255, 193, 7, .08);
+
+      border-radius: 12px;
+
+    }
+
+    .warning-icon {
+
+      color: #FFC107;
+
+      font-size: 22px;
+
+      flex-shrink: 0;
+
+      line-height: 1;
+
+    }
+
+    .warning-text {
+
+      color: #f5f5f5;
+
+      font-size: 14px;
+
+      line-height: 1.8;
+
+    }
+  </style>
 </head>
+
 <body>
 
-<nav class="nav" id="nav">
-  <a href="https://wa.link/aruqr6" class="nav-cta en" style="background-color: #25D366;">ORDER NOW</a>
-  <div class="nav-logo en" style="font-family: Fauna;">AVORA</div>
-</nav>
+  <nav class="nav" id="nav">
+    <a href="https://wa.link/aruqr6" class="nav-cta en" style="background-color: #25D366;">ORDER NOW</a>
+    <div class="nav-logo en" style="font-family: Fauna;">AVORA</div>
+  </nav>
 
-<!-- ================= HERO ================= -->
-<header class="hero" id="top">
-  <div class="glow"></div>
-  <div class="wrap">
-    <div class="hero-badge eyebrow">BRAND DEMO &amp; VISION</div>
-    <h1 class="hero-logo en" style="font-family: Fauna;">AVORA</h1>
-    <div class="hero-tag en">Confidence in Motion</div>
-    <p class="hero-sub">تقديم جيل جديد ومبتكر من الملابس الرياضية والطبية عالية الأداء بمفهوم الأناقة الهادئة.</p>
-    <div class="hero-scroll">
-      <span class="en">SCROLL</span>
-      <span class="line"></span>
+  <!-- ================= HERO ================= -->
+  <header class="hero" id="top">
+    <div class="glow"></div>
+    <div class="wrap">
+      <div class="hero-badge eyebrow">BRAND DEMO &amp; VISION</div>
+      <h1 class="hero-logo en" style="font-family: Fauna;">AVORA</h1>
+      <div class="hero-tag en">Confidence in Motion</div>
+      <p class="hero-sub">تقديم جيل جديد ومبتكر من الملابس الرياضية والطبية عالية الأداء بمفهوم الأناقة الهادئة.</p>
+      <div class="hero-scroll">
+        <span class="en">SCROLL</span>
+        <span class="line"></span>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
 
-<!-- ================= COLORS & PACKAGING ================= -->
-<section>
-  <div class="glow right"></div>
-  <div class="wrap">
-    <div class="section-title reveal">
-      <div class="bar"></div>
-      تنوع الألوان الفاخرة والتغليف الراقي
-    </div>
-    <div class="colors-layout reveal">
-      <div class="product-gallery">
+  <!-- ================= COLORS & PACKAGING ================= -->
+  <section>
+    <div class="glow right"></div>
+    <div class="wrap">
+      <div class="section-title reveal">
+        <div class="bar"></div>
+        تنوع الألوان الفاخرة والتغليف الراقي
+      </div>
+      <div class="colors-layout reveal">
+        <div class="product-gallery">
 
-        <img
-          id="mainImage"
-          src="images/black/1.jpg"
-          alt="Product">
+          <img id="mainImage" src="images/black/1.jpg" alt="Product">
 
-    <div id="thumbnails" class="thumbnails"></div>
+          <div id="thumbnails" class="thumbnails"></div>
 
-</div>
-      <div class="color-swatch-panel">
-        <div class="swatch-row">
-          <div><div class="swatch" style="background:#0e0e0e" data-color="black" title="Black"></div><div class="swatch-label">BLACK</div></div>
-          <div><div class="swatch" style="background:#f2f1ec" data-color="white" title="White"></div><div class="swatch-label">WHITE</div></div>
-          <div><div class="swatch" style="background:#1f2b45" data-color="navy" title="Navy"></div><div class="swatch-label">NAVY</div></div>
-          <div><div class="swatch" style="background:#5c6b4a" data-color="light_olive" title="Light Olive"></div><div class="swatch-label">L. OLIVE</div></div>
-          <div><div class="swatch" style="background:#3c4a30" data-color="dark_olive" title="Dark Olive"></div><div class="swatch-label">D. OLIVE</div></div>
-          <div><div class="swatch" style="background:#6d1f2a" data-color="burgundy" title="Burgundy"></div><div class="swatch-label">BURGUNDY</div></div>
-          <div><div class="swatch" style="background:#1e3a6e" data-color="royal_blue" title="Royal Blue"></div><div class="swatch-label">ROYAL BLUE</div></div>
+        </div>
+        <div class="color-swatch-panel">
+          <div class="swatch-row">
+            <div>
+              <div class="swatch" style="background:#0e0e0e" data-color="black" title="Black"></div>
+              <div class="swatch-label">BLACK</div>
+            </div>
+            <div>
+              <div class="swatch" style="background:#f2f1ec" data-color="white" title="White"></div>
+              <div class="swatch-label">WHITE</div>
+            </div>
+            <div>
+              <div class="swatch" style="background:#1f2b45" data-color="navy" title="Navy"></div>
+              <div class="swatch-label">NAVY</div>
+            </div>
+            <div>
+              <div class="swatch" style="background:#5c6b4a" data-color="light_olive" title="Light Olive"></div>
+              <div class="swatch-label">L. OLIVE</div>
+            </div>
+            <div>
+              <div class="swatch" style="background:#3c4a30" data-color="dark_olive" title="Dark Olive"></div>
+              <div class="swatch-label">D. OLIVE</div>
+            </div>
+            <div>
+              <div class="swatch" style="background:#6d1f2a" data-color="burgundy" title="Burgundy"></div>
+              <div class="swatch-label">BURGUNDY</div>
+            </div>
+            <div>
+              <div class="swatch" style="background:#1e3a6e" data-color="royal_blue" title="Royal Blue"></div>
+              <div class="swatch-label">ROYAL BLUE</div>
+            </div>
+          </div>
+        </div>
+        <div class="colors-copy">
+          <h3>الألوان الأساسية والتعبئة والتعليمات</h3>
+          <p>مجموعة ألوان غنية وثابتة مصممة لتناسب عناية الملابس الطبية واليومية ومختلف الأذواق.</p>
+          <div class="package-notes">
+            <div class="note">
+              <span>تغليف مميز في أكياس سحاب فاخرة (Premium Zip/Frosted Bag) تحمل شعارنا الأنيق.</span><span
+                class="n-icon">✉</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="colors-copy">
-        <h3>الألوان الأساسية والتعبئة والتعليمات</h3>
-        <p>مجموعة ألوان غنية وثابتة مصممة لتناسب عناية الملابس الطبية واليومية ومختلف الأذواق.</p>
-        <div class="package-notes">
-          <div class="note"><span>تغليف مميز في أكياس سحاب فاخرة (Premium Zip/Frosted Bag) تحمل شعارنا الأنيق.</span><span class="n-icon">✉</span></div>
-          <!-- <div class="note"><span>غسيل بحد أقصى 30 درجة، مقلوب من الداخل، بحرارة منخفضة، تجنب العصر والكلور تماماً.</span><span class="n-icon">!</span></div> -->
-        <div class="warning-note">
-
-    <span class="warning-icon">⚠️</span>
-
-    <div class="warning-text">
-
-        <strong>تعليمات العناية</strong><br>
-
-        غسيل بحد أقصى <strong>30°</strong>، مقلوبًا من الداخل، بحرارة منخفضة، مع تجنب العصر واستخدام الكلور للحفاظ على جودة النسيج.
-
     </div>
+    </div>
+  </section>
 
-</div>
+
+  <!-- ================= PHILOSOPHY TITLE ================= -->
+  <section class="title-slide reveal">
+    <div class="glow"></div>
+    <div class="wrap">
+      <h2>فلسفة الهوية</h2>
+      <div class="divider-line"></div>
+      <p class="en-sub">Quiet Luxury, Performance &amp; Comfort</p>
+    </div>
+  </section>
+
+  <!-- ================= QUOTE ================= -->
+  <section class="quote-section">
+    <div class="wrap reveal">
+      <div class="section-title" style="justify-content:center; margin-bottom:20px;">
+        <div class="bar"></div>
+        رؤية أعمق من مجرد نسيج
+      </div>
+      <div class="quote-mark en">&rdquo;</div>
+      <blockquote>
+        العميل لا يشتري مجرد قطعة قماش... العميل يشتري: الراحة الفائقة، الثقة المطلقة في الحركة، الأداء العالي، والمظهر
+        الاحترافي الراقي.
+      </blockquote>
+      <div class="quote-attr en"><span style="font-family: Fauna;">AVORA</span> PHILOSOPHY</div>
+    </div>
+  </section>
+
+  <!-- ================= MISSION / VISION ================= -->
+  <section>
+    <div class="glow"></div>
+    <div class="wrap">
+      <div class="section-title reveal">
+        <div class="bar"></div>
+        <span>الرؤية والرسالة</span>
+        <span class="en-part">Core Purpose</span>
+      </div>
+      <div class="grid-2 reveal-stagger">
+        <div class="card">
+          <h3>Mission | رسالتنا</h3>
+          <p>تصميم ملابس مريحة واستثنائية الملمس وتسهل وتؤدي دورها بمرونة الحركة والنشاط اليومي دون أي مجهود، وتلهم
+            مرتديها بالثقة الكاملة والاحترافية والتميز كل يوم.</p>
+        </div>
+        <div class="card">
+          <h3>Vision | رؤيتنا</h3>
+          <p>أن تصبح <span style="font-family: Fauna;">AVORA</span> واحدة من أبرز العلامات التجارية العالمية في الملابس
+            عالية الأداء. لتقدم الراحة الممزوجة بالثقة والابتكار لكل المحترفين والأفراد النشطين في حياتهم اليومية
+            المليئة بالحركة والمهام الشاقة.</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-<!-- ================= PHILOSOPHY TITLE ================= -->
-<section class="title-slide reveal">
-  <div class="glow"></div>
-  <div class="wrap">
-    <h2>فلسفة الهوية</h2>
-    <div class="divider-line"></div>
-    <p class="en-sub">Quiet Luxury, Performance &amp; Comfort</p>
-  </div>
-</section>
-
-<!-- ================= QUOTE ================= -->
-<section class="quote-section">
-  <div class="wrap reveal">
-    <div class="section-title" style="justify-content:center; margin-bottom:20px;">
-      <div class="bar"></div>
-      رؤية أعمق من مجرد نسيج
-    </div>
-    <div class="quote-mark en">&rdquo;</div>
-    <blockquote>
-      العميل لا يشتري مجرد قطعة قماش... العميل يشتري: الراحة الفائقة، الثقة المطلقة في الحركة، الأداء العالي، والمظهر الاحترافي الراقي.
-    </blockquote>
-    <div class="quote-attr en"><span style="font-family: Fauna;">AVORA</span> PHILOSOPHY</div>
-  </div>
-</section>
-
-<!-- ================= MISSION / VISION ================= -->
-<section>
-  <div class="glow"></div>
-  <div class="wrap">
-    <div class="section-title reveal">
-      <div class="bar"></div>
-      <span>الرؤية والرسالة</span>
-      <span class="en-part">Core Purpose</span>
-    </div>
-    <div class="grid-2 reveal-stagger">
-      <div class="card">
-        <h3>Mission | رسالتنا</h3>
-        <p>تصميم ملابس مريحة واستثنائية الملمس وتسهل وتؤدي دورها بمرونة الحركة والنشاط اليومي دون أي مجهود، وتلهم مرتديها بالثقة الكاملة والاحترافية والتميز كل يوم.</p>
+  <!-- ================= BRAND VALUES ================= -->
+  <section>
+    <div class="wrap">
+      <div class="section-title reveal">
+        <div class="bar"></div>
+        <span>قيم العلامة التجارية</span>
+        <span class="en-part">Brand Values</span>
       </div>
-      <div class="card">
-        <h3>Vision | رؤيتنا</h3>
-        <p>أن تصبح <span style="font-family: Fauna;">AVORA</span> واحدة من أبرز العلامات التجارية العالمية في الملابس عالية الأداء. لتقدم الراحة الممزوجة بالثقة والابتكار لكل المحترفين والأفراد النشطين في حياتهم اليومية المليئة بالحركة والمهام الشاقة.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= BRAND VALUES ================= -->
-<section>
-  <div class="wrap">
-    <div class="section-title reveal">
-      <div class="bar"></div>
-      <span>قيم العلامة التجارية</span>
-      <span class="en-part">Brand Values</span>
-    </div>
-    <div class="grid-3 reveal-stagger">
-      <div class="card">
-        <div class="icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/></svg>
+      <div class="grid-3 reveal-stagger">
+        <div class="card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z" />
+            </svg>
+          </div>
+          <h3>الثقة والعالمية</h3>
+          <p>Trust &amp; Global Mindset: بناء جسور الثقة مع عملائنا من خلال تلبية تطلعاتهم بمعايير جودة ومظهر ينافس أرقى
+            الماركات العالمية.</p>
         </div>
-        <h3>الثقة والعالمية</h3>
-        <p>Trust &amp; Global Mindset: بناء جسور الثقة مع عملائنا من خلال تلبية تطلعاتهم بمعايير جودة ومظهر ينافس أرقى الماركات العالمية.</p>
-      </div>
-      <div class="card">
-        <div class="icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+        <div class="card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
+            </svg>
+          </div>
+          <h3>الأداء والجودة</h3>
+          <p>Performance &amp; Premium: مرونة ألياف النسيج تسمح بالتمدد الحر مع الاهتمام المطلق بجودة الخياطة والتقفيل
+            النظيف ومقاومة الانكماش.</p>
         </div>
-        <h3>الأداء والجودة</h3>
-        <p>Performance &amp; Premium: مرونة ألياف النسيج تسمح بالتمدد الحر مع الاهتمام المطلق بجودة الخياطة والتقفيل النظيف ومقاومة الانكماش.</p>
-      </div>
-      <div class="card">
-        <div class="icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20c4-1 6-4 6-8V6l10-2v10c0 4-3 6-6 7"/></svg>
-        </div>
-        <h3>الراحة والبساطة</h3>
-        <p>Comfort &amp; Minimalism: ابتكار منسوجات تمنح إحساساً متميزاً وناعماً للجلد وتصميم هندسي هادئ بدون تفاصيل زائدة ومزعجة.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= PRODUCT TITLE ================= -->
-<section class="title-slide reveal">
-  <div class="glow right"></div>
-  <div class="wrap">
-    <h2>المنتج الأول والفريد</h2>
-    <div class="divider-line"></div>
-    <p class="en-sub">Introducing <span style="font-family: Fauna;">AVORA</span> Performance Underscrub</p>
-  </div>
-</section>
-
-<!-- ================= PRODUCT FEATURE ================= -->
-<section>
-  <div class="wrap">
-    <div class="section-title reveal">
-      <div class="bar"></div>
-      تصميم مدروس للشيفتات الطويلة
-    </div>
-    <div class="feature reveal">
-      <div class="garment-visual">
-        <div class="garment-image">
-
-    <img
-        src="images/black/1.webp"
-        alt="AVORA Underscrub">
-
-</div>
-        <div class="garment-tags">
-          <span>CREW NECK</span>
-          <span>MINIMAL LOGO</span>
-          <span>FLAT SEAMS</span>
-          <span>COMFORT FIT</span>
-          <span>CURVED HEM</span>
-          <span>REFLECTIVE LINE</span>
+        <div class="card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4 20c4-1 6-4 6-8V6l10-2v10c0 4-3 6-6 7" />
+            </svg>
+          </div>
+          <h3>الراحة والبساطة</h3>
+          <p>Comfort &amp; Minimalism: ابتكار منسوجات تمنح إحساساً متميزاً وناعماً للجلد وتصميم هندسي هادئ بدون تفاصيل
+            زائدة ومزعجة.</p>
         </div>
       </div>
-      <div class="feature-copy">
-        <h3>أداء استثنائي للحركة المستمرة</h3>
-        <p>تم تصميم أول منتجات <span style="font-family: Fauna;">AVORA</span> ليكون الرفيق المثالي للكوادر الطبية والمحترفين الذين تتطلب طبيعة عملهم ساعات طويلة وبذل مجهود حركي متواصل.</p>
-        <ul class="check-list" dir="ltr">
-          <li><span>نسيج من 96% قطن طبيعي فاخر و 4% خيوط ليكرا مرنة.</span><span class="tick">✓</span></li>
-          <li><span>نسيج Single Jersey ناعم للغاية ومعالج ضد التوبير والاهتراء.</span><span class="tick">✓</span></li>
-          <li><span>نسيج يسمح للجلد بالتنفس الكامل (Breathable) ومقاوم للحرارة والرطوبة.</span><span class="tick">✓</span></li>
-        </ul>
-        <br>
-        <hr>
-        <br>
-        <div class="warning-note">
-
-    <i class="fa-solid fa-soap"></i>
-
-    <div class="warning-text">
-
-        <strong>تعليمات العناية</strong><br>
-
-        <ul>
-        <li>غسيل بحد أقصى 30°</li>
-        <li>مقلوبًا من الداخل</li>
-        <li>تجنب العصر واستخدام الكلور للحفاظ على جودة النسيج.</li>
-      </ul>
     </div>
+  </section>
 
-</div>
+  <!-- ================= PRODUCT TITLE ================= -->
+  <section class="title-slide reveal">
+    <div class="glow right"></div>
+    <div class="wrap">
+      <h2>المنتج الأول والفريد</h2>
+      <div class="divider-line"></div>
+      <p class="en-sub">Introducing <span style="font-family: Fauna;">AVORA</span> Performance Underscrub</p>
+    </div>
+  </section>
+
+  <!-- ================= PRODUCT FEATURE ================= -->
+  <section>
+    <div class="wrap">
+      <div class="section-title reveal">
+        <div class="bar"></div>
+        تصميم مدروس للشيفتات الطويلة
+      </div>
+      <div class="feature reveal">
+        <div class="garment-visual">
+          <div class="garment-image">
+
+            <img src="images/black/1.webp" alt="AVORA Underscrub">
+
+          </div>
+          <div class="garment-tags">
+            <span>CREW NECK</span>
+            <span>MINIMAL LOGO</span>
+            <span>FLAT SEAMS</span>
+            <span>COMFORT FIT</span>
+            <span>CURVED HEM</span>
+            <span>REFLECTIVE LINE</span>
+          </div>
+        </div>
+        <div class="feature-copy">
+          <h3>أداء استثنائي للحركة المستمرة</h3>
+          <p>تم تصميم أول منتجات <span style="font-family: Fauna;">AVORA</span> ليكون الرفيق المثالي للكوادر الطبية
+            والمحترفين الذين تتطلب طبيعة عملهم ساعات طويلة وبذل مجهود حركي متواصل.</p>
+          <ul class="check-list" dir="ltr">
+            <li><span>نسيج من 96% قطن طبيعي فاخر و 4% خيوط ليكرا مرنة.</span><span class="tick">✓</span></li>
+            <li><span>نسيج Single Jersey ناعم للغاية ومعالج ضد التوبير والاهتراء.</span><span class="tick">✓</span></li>
+            <li><span>نسيج يسمح للجلد بالتنفس الكامل (Breathable) ومقاوم للحرارة والرطوبة.</span><span
+                class="tick">✓</span></li>
+          </ul>
+          <br>
+          <hr>
+          <br>
+          <div class="warning-note">
+
+            <i class="fa-solid fa-soap"></i>
+
+            <div class="warning-text">
+
+              <strong>تعليمات العناية</strong><br>
+
+              <ul>
+                <li>غسيل بحد أقصى 30°</li>
+                <li>مقلوبًا من الداخل</li>
+                <li>تجنب استخدام الكلور والعصر للحفاظ على جودة النسيج والمنتج</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= TECH SPECS ================= -->
-<section>
-  <div class="glow"></div>
-  <div class="wrap">
-    <div class="section-title reveal">
-      <div class="bar"></div>
-      المواصفات الفنية الدقيقة للنسيج
-    </div>
-    <div class="specs reveal">
-      <div class="specs-copy">
-        <h3>معايير وقصات دقيقة ومدروسة</h3>
-        <p>لقد اخترنا الوزن المثالي (GSM 190) لنضمن للقطعة تماسكاً فائقاً وقواماً ومظهراً رياضياً جذاباً (Athletic Fit) مع توفير توازن استثنائي بين الخفة ومقاومة الانكماش.</p>
-        <ul class="dot-list">
-          <li><span class="dot"></span><span>تصميم مريح وانسيابي ملائم للجنسين (Unisex).</span></li>
-          <li><span class="dot"></span><span>ياقة دائرية Crew Neck متماسكة وخياطة داخلية نظيفة ومسطحة تماماً تمنع الاحتكاك.</span></li>
-          <li><span class="dot"></span><span>أكمام طويلة مريحة توفر دفئاً وتألقاً وحماية كاملة للذراعين.</span></li>
-        </ul>
+  <!-- ================= TECH SPECS ================= -->
+  <section>
+    <div class="glow"></div>
+    <div class="wrap">
+      <div class="section-title reveal">
+        <div class="bar"></div>
+        المواصفات الفنية الدقيقة للنسيج
       </div>
-      <div class="big-number">
-        <div class="num en">190</div>
-        <div class="label">وزن النسيج الفاخر (GSM)</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= AUDIENCE ================= -->
-<section>
-  <div class="wrap">
-    <div class="section-title reveal">
-      <div class="bar"></div>
-      الفئات المستهدفة ورحلة الوصول للجمهور
-    </div>
-    <div class="grid-2 reveal-stagger">
-      <div class="audience-card">
-        <h3>البداية والتركيز الشديد (المرحلة الأولى)<span class="badge">1</span></h3>
-        <p>القطاع الطبي بأكمله: الأطباء، أطباء الأسنان، الصيادلة، أخصائي التمريض والعلاج الطبيعي والطب البيطري، بالإضافة لطلاب الكليات الطبية الذين يبحثون عن راحة مطلقة أسفل السكراب الطبي لحمايتهم ودعم ثقتهم في الممرات والعيادات.</p>
-      </div>
-      <div class="audience-card">
-        <h3>الانتشار والتوسع (المرحلة الثانية)<span class="badge">2</span></h3>
-        <p>الرياضيون، رواد صالات الألعاب البدنية، محبي السفر والتنقل، وكل شخص يفضل ارتداء الملابس اليومية الكاجوال الفخمة التي تعتمد على بساطة وأناقة التصاميم وخامات تسمح بالحركة المستمرة.</p>
+      <div class="specs reveal">
+        <div class="specs-copy">
+          <h3>معايير وقصات دقيقة ومدروسة</h3>
+          <p>لقد اخترنا الوزن المثالي (GSM 190) لنضمن للقطعة تماسكاً فائقاً وقواماً ومظهراً رياضياً جذاباً (Athletic
+            Fit) مع توفير توازن استثنائي بين الخفة ومقاومة الانكماش.</p>
+          <ul class="dot-list">
+            <li><span class="dot"></span><span>تصميم مريح وانسيابي ملائم للجنسين (Unisex).</span></li>
+            <li><span class="dot"></span><span>ياقة دائرية Crew Neck متماسكة وخياطة داخلية نظيفة ومسطحة تماماً تمنع
+                الاحتكاك.</span></li>
+            <li><span class="dot"></span><span>أكمام طويلة مريحة توفر دفئاً وتألقاً وحماية كاملة للذراعين.</span></li>
+          </ul>
+        </div>
+        <div class="big-number">
+          <div class="num en">190</div>
+          <div class="label">وزن النسيج الفاخر (GSM)</div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= ROADMAP ================= -->
-<section>
-  <div class="wrap">
-    <div class="section-title reveal">
-      <div class="bar"></div>
-      خارطة التوسع والمستقبل الاستراتيجي للبراند
-    </div>
-    <div class="roadmap-track reveal-stagger">
-      <div class="phase">
-        <div class="node"></div>
-        <div class="en-phase">Phase 01</div>
-        <h4>التأسيس والمهمة الأولى</h4>
-        <p>إطلاق الـ Underscrub كقطعة مرافقة أساسية للكوادر الطبية لكسب ثقة السوق والاعتراف بالبراند كرمز للراحة.</p>
+  <!-- ================= AUDIENCE ================= -->
+  <section>
+    <div class="wrap">
+      <div class="section-title reveal">
+        <div class="bar"></div>
+        الفئات المستهدفة ورحلة الوصول للجمهور
       </div>
-      <div class="phase">
-        <div class="node"></div>
-        <div class="en-phase">Phase 02</div>
-        <h4>الزي الطبي الشامل</h4>
-        <p>إطلاق الأطقم الطبية الكاملة (Medical Scrubs) والسترات الفاخرة والقبعات الأنيقة المكملة لهوية الكوادر المتميزة.</p>
-      </div>
-      <div class="phase">
-        <div class="node"></div>
-        <div class="en-phase">Phase 03</div>
-        <h4>الملابس الرياضية الفعالة</h4>
-        <p>التوسع لسوق الملابس الرياضية المتكاملة (Activewear) كالهوديز، التيشيرتات، والبناطيل المصممة للمحترفين والرياضيين.</p>
-      </div>
-      <div class="phase">
-        <div class="node"></div>
-        <div class="en-phase">Phase 04</div>
-        <h4>نمط الحياة العصري</h4>
-        <p>التحول التدريجي والكامل إلى علامة تجارية رائدة تجسد نمط حياة عصري ومريح ومبتكر في كل مكان وبأي وقت.</p>
+      <div class="grid-2 reveal-stagger">
+        <div class="audience-card">
+          <h3>البداية والتركيز الشديد (المرحلة الأولى)<span class="badge">1</span></h3>
+          <p>القطاع الطبي بأكمله: الأطباء، أطباء الأسنان، الصيادلة، أخصائي التمريض والعلاج الطبيعي والطب البيطري،
+            بالإضافة لطلاب الكليات الطبية الذين يبحثون عن راحة مطلقة أسفل السكراب الطبي لحمايتهم ودعم ثقتهم في الممرات
+            والعيادات.</p>
+        </div>
+        <div class="audience-card">
+          <h3>الانتشار والتوسع (المرحلة الثانية)<span class="badge">2</span></h3>
+          <p>الرياضيون، رواد صالات الألعاب البدنية، محبي السفر والتنقل، وكل شخص يفضل ارتداء الملابس اليومية الكاجوال
+            الفخمة التي تعتمد على بساطة وأناقة التصاميم وخامات تسمح بالحركة المستمرة.</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= CLOSING ================= -->
-<section class="closing">
-  <div class="glow"></div>
-  <div class="wrap">
-    <div class="closing-logo en" style="font-family: Fauna;">AVORA</div>
-    <div class="closing-tag en">. Confidence in Motion</div>
-    <div class="closing-cta">
-      <a href="https://wa.link/aruqr6" class="btn btn-primary en" style="background-color: #25D366; color: white;">ORDER NOW</a>
-      <button class="btn btn-ghost en" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'})">BACK TO TOP</button>
+  <!-- ================= ROADMAP ================= -->
+  <section>
+    <div class="wrap">
+      <div class="section-title reveal">
+        <div class="bar"></div>
+        خارطة التوسع والمستقبل الاستراتيجي للبراند
+      </div>
+      <div class="roadmap-track reveal-stagger">
+        <div class="phase">
+          <div class="node"></div>
+          <div class="en-phase">Phase 01</div>
+          <h4>التأسيس والمهمة الأولى</h4>
+          <p>إطلاق الـ Underscrub كقطعة مرافقة أساسية للكوادر الطبية لكسب ثقة السوق والاعتراف بالبراند كرمز للراحة.</p>
+        </div>
+        <div class="phase">
+          <div class="node"></div>
+          <div class="en-phase">Phase 02</div>
+          <h4>الزي الطبي الشامل</h4>
+          <p>إطلاق الأطقم الطبية الكاملة (Medical Scrubs) والسترات الفاخرة والقبعات الأنيقة المكملة لهوية الكوادر
+            المتميزة.</p>
+        </div>
+        <div class="phase">
+          <div class="node"></div>
+          <div class="en-phase">Phase 03</div>
+          <h4>الملابس الرياضية الفعالة</h4>
+          <p>التوسع لسوق الملابس الرياضية المتكاملة (Activewear) كالهوديز، التيشيرتات، والبناطيل المصممة للمحترفين
+            والرياضيين.</p>
+        </div>
+        <div class="phase">
+          <div class="node"></div>
+          <div class="en-phase">Phase 04</div>
+          <h4>نمط الحياة العصري</h4>
+          <p>التحول التدريجي والكامل إلى علامة تجارية رائدة تجسد نمط حياة عصري ومريح ومبتكر في كل مكان وبأي وقت.</p>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer class="en">© 2026 <span style="font-family: Fauna;">AVORA</span> — All rights reserved.</footer>
+  <!-- ================= CLOSING ================= -->
+  <section class="closing">
+    <div class="glow"></div>
+    <div class="wrap">
+      <div class="closing-logo en" style="font-family: Fauna;">AVORA</div>
+      <div class="closing-tag en">. Confidence in Motion</div>
+      <div class="closing-cta">
+        <a href="https://wa.link/aruqr6" class="btn btn-primary en"
+          style="background-color: #25D366; color: white;">ORDER NOW</a>
+        <button class="btn btn-ghost en"
+          onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'})">BACK TO TOP</button>
+      </div>
+    </div>
+  </section>
 
-<script>
-  // Nav scroll state
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 20);
-  }, {passive:true});
+  <footer class="en">© 2026 <span style="font-family: Fauna;">AVORA</span> — All rights reserved.</footer>
 
-  // Reveal on scroll
-  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('in');
-        io.unobserve(entry.target);
-      }
-    });
-  }, {threshold:0.15});
-  revealEls.forEach(el => io.observe(el));
-  const productImages = {
+  <script>
+    // Nav scroll state
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
 
-    black: [
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+    const productImages = {
+
+      black: [
         "images/black/1.webp",
         "images/black/2.webp",
         "images/black/3.webp",
         "images/black/4.webp",
         "images/black/5.webp",
         "images/black/6.webp"
-    ],
+      ],
 
-    white: [
-        "images/white/1.jpg",
-        "images/white/2.jpg",
-        "images/white/3.jpg",
-        "images/white/4.jpg",
-        "images/white/5.jpg",
-        "images/white/6.jpg"
-    ],
+      white: [
+        "images/white/1.webp",
+        "images/white/2.webp",
+        "images/white/3.webp",
+        "images/white/4.webp",
+        "images/white/5.webp",
+        "images/white/6.webp"
+      ],
 
-    navy: [
+      navy: [
         "images/navy/1.jpg",
         "images/navy/2.jpg",
         "images/navy/3.jpg",
         "images/navy/4.jpg",
         "images/navy/5.jpg",
         "images/navy/6.jpg"
-    ],
+      ],
 
-    "light-olive":[
+      "light-olive": [
         "images/light-olive/1.jpg",
         "images/light-olive/2.jpg",
         "images/light-olive/3.jpg",
         "images/light-olive/4.jpg",
         "images/light-olive/5.jpg",
         "images/light-olive/6.jpg"
-    ],
+      ],
 
-    "dark-olive":[
+      "dark-olive": [
         "images/dark-olive/1.jpg",
         "images/dark-olive/2.jpg",
         "images/dark-olive/3.jpg",
         "images/dark-olive/4.jpg",
         "images/dark-olive/5.jpg",
         "images/dark-olive/6.jpg"
-    ],
+      ],
 
-    burgundy:[
+      burgundy: [
         "images/burgundy/1.jpg",
         "images/burgundy/2.jpg",
         "images/burgundy/3.jpg",
         "images/burgundy/4.jpg",
         "images/burgundy/5.jpg",
         "images/burgundy/6.jpg"
-    ],
+      ],
 
-    "royal-blue":[
+      "royal-blue": [
         "images/royal-blue/1.jpg",
         "images/royal-blue/2.jpg",
         "images/royal-blue/3.jpg",
         "images/royal-blue/4.jpg",
         "images/royal-blue/5.jpg",
         "images/royal-blue/6.jpg"
-    ]
+      ]
 
-};
+    };
 
-const mainImage = document.getElementById("mainImage");
-const thumbnails = document.getElementById("thumbnails");
+    const mainImage = document.getElementById("mainImage");
+    const thumbnails = document.getElementById("thumbnails");
 
-function renderGallery(images){
+    function renderGallery(images) {
 
-    mainImage.src = images[0];
+      mainImage.src = images[0];
 
-    thumbnails.innerHTML = "";
+      thumbnails.innerHTML = "";
 
-    images.forEach(image=>{
+      images.forEach(image => {
 
         const img = document.createElement("img");
 
         img.src = image;
 
-        img.onclick=()=>{
+        img.onclick = () => {
 
-            mainImage.src=image;
+          mainImage.src = image;
 
         };
 
         thumbnails.appendChild(img);
 
-    });
+      });
 
-}
+    }
 
-renderGallery(productImages.black);
+    renderGallery(productImages.black);
 
-function preloadAllImages() {
+    function preloadAllImages() {
 
-    const loaded = new Set();
+      const loaded = new Set();
 
-    Object.values(productImages).forEach(images => {
+      Object.values(productImages).forEach(images => {
 
         images.forEach(src => {
 
-            if (loaded.has(src)) return;
+          if (loaded.has(src)) return;
 
-            loaded.add(src);
+          loaded.add(src);
 
-            const img = new Image();
+          const img = new Image();
 
-            img.src = src;
+          img.src = src;
 
         });
 
+      });
+
+    }
+
+    window.addEventListener("load", () => {
+
+      preloadAllImages();
+
     });
 
-}
+    document.querySelectorAll(".swatch").forEach(swatch => {
 
-window.addEventListener("load", () => {
-
-    preloadAllImages();
-
-});
-
-document.querySelectorAll(".swatch").forEach(swatch=>{
-
-    swatch.addEventListener("click",()=>{
+      swatch.addEventListener("click", () => {
 
         renderGallery(productImages[swatch.dataset.color]);
 
+      });
+
     });
+  </script>
 
-});
-</script>
+  <a href="https://wa.link/aruqr6" class="whatsapp-float" target="_blank" aria-label="Order on WhatsApp">
 
-<a
-    href="https://wa.link/aruqr6"
-    class="whatsapp-float"
-    target="_blank"
-    aria-label="Order on WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor">
 
-    <svg xmlns="http://www.w3.org/2000/svg"
-         viewBox="0 0 32 32"
-         fill="currentColor">
-
-        <path d="M19.11 17.21c-.27-.14-1.58-.78-1.82-.87-.24-.09-.41-.14-.59.14-.17.27-.68.87-.83 1.05-.15.18-.3.2-.56.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.33-1.56-1.48-1.83-.15-.27-.02-.41.11-.54.12-.12.27-.31.41-.46.14-.15.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.59-1.42-.81-1.95-.21-.5-.42-.43-.59-.44h-.5c-.18 0-.47.07-.72.34-.24.27-.94.92-.94 2.24s.96 2.61 1.09 2.79c.14.18 1.89 2.88 4.58 4.04.64.28 1.15.45 1.54.58.65.21 1.24.18 1.7.11.52-.08 1.58-.65 1.8-1.27.22-.63.22-1.17.15-1.27-.06-.1-.24-.16-.51-.29z"/>
-        <path d="M16.02 3C8.84 3 3 8.73 3 15.8c0 2.5.74 4.93 2.13 7L3.74 29l6.39-1.37a13.1 13.1 0 0 0 5.89 1.4c7.18 0 13.02-5.73 13.02-12.8C29.04 8.73 23.2 3 16.02 3zm0 23.74a10.8 10.8 0 0 1-5.51-1.5l-.39-.23-3.79.81.81-3.69-.25-.38a10.5 10.5 0 0 1-1.65-5.63c0-5.93 4.84-10.76 10.78-10.76s10.78 4.83 10.78 10.76-4.84 10.62-10.78 10.62z"/>
+      <path
+        d="M19.11 17.21c-.27-.14-1.58-.78-1.82-.87-.24-.09-.41-.14-.59.14-.17.27-.68.87-.83 1.05-.15.18-.3.2-.56.07-.27-.14-1.12-.41-2.14-1.31-.79-.7-1.33-1.56-1.48-1.83-.15-.27-.02-.41.11-.54.12-.12.27-.31.41-.46.14-.15.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.59-1.42-.81-1.95-.21-.5-.42-.43-.59-.44h-.5c-.18 0-.47.07-.72.34-.24.27-.94.92-.94 2.24s.96 2.61 1.09 2.79c.14.18 1.89 2.88 4.58 4.04.64.28 1.15.45 1.54.58.65.21 1.24.18 1.7.11.52-.08 1.58-.65 1.8-1.27.22-.63.22-1.17.15-1.27-.06-.1-.24-.16-.51-.29z" />
+      <path
+        d="M16.02 3C8.84 3 3 8.73 3 15.8c0 2.5.74 4.93 2.13 7L3.74 29l6.39-1.37a13.1 13.1 0 0 0 5.89 1.4c7.18 0 13.02-5.73 13.02-12.8C29.04 8.73 23.2 3 16.02 3zm0 23.74a10.8 10.8 0 0 1-5.51-1.5l-.39-.23-3.79.81.81-3.69-.25-.38a10.5 10.5 0 0 1-1.65-5.63c0-5.93 4.84-10.76 10.78-10.76s10.78 4.83 10.78 10.76-4.84 10.62-10.78 10.62z" />
     </svg>
 
-</a>
+  </a>
 
 </body>
+
 </html>
