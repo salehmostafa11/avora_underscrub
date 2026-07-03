@@ -218,10 +218,44 @@
       }
     }
 
+    /* ---------- Top delivery banner ---------- */
+    :root {
+      --banner-h: 40px;
+    }
+
+    .top-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+      padding: 9px 20px;
+      background: linear-gradient(90deg, rgba(169, 201, 171, 0.18), rgba(127, 163, 131, 0.1));
+      border-bottom: 1px solid var(--border-strong);
+      backdrop-filter: blur(10px);
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+
+    .top-banner strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .top-banner .icon {
+      flex-shrink: 0;
+    }
+
     /* ---------- Nav ---------- */
     .nav {
       position: fixed;
-      top: 0;
+      top: var(--banner-h);
       left: 0;
       right: 0;
       z-index: 50;
@@ -232,7 +266,7 @@
       background: rgba(8, 9, 10, 0.7);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid transparent;
-      transition: border-color .3s ease, background .3s ease;
+      transition: border-color .3s ease, background .3s ease, top .25s ease;
     }
 
     .nav.scrolled {
@@ -272,7 +306,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 160px 24px 100px;
+      padding: calc(160px + var(--banner-h)) 24px 100px;
     }
 
     .hero .wrap {
@@ -1110,6 +1144,12 @@
         padding: 16px 20px;
       }
 
+      .top-banner {
+        font-size: 11px;
+        padding: 8px 14px;
+        gap: 6px;
+      }
+
       /* .nav-cta{display:none;} */
       .nav-cta {
 
@@ -1274,6 +1314,11 @@
 </head>
 
 <body>
+
+  <div class="top-banner" id="topBanner">
+    <span class="icon">🚚</span>
+    <span>التوصيل <strong>مجاني</strong> داخل المنصورة فقط — لا يتوفر التوصيل حالياً لباقي المحافظات</span>
+  </div>
 
   <nav class="nav" id="nav">
     <a href="https://wa.link/aruqr6" class="nav-cta en" style="background-color: #25D366;">ORDER NOW</a>
@@ -1632,6 +1677,16 @@
   <footer class="en">© 2026 <span style="font-family: Fauna;">AVORA</span> — All rights reserved.</footer>
 
   <script>
+    // Top delivery banner: keep nav/hero offset in sync with its real
+    // rendered height (it can wrap to two lines on small screens).
+    const topBanner = document.getElementById('topBanner');
+    function syncBannerHeight() {
+      document.documentElement.style.setProperty('--banner-h', topBanner.offsetHeight + 'px');
+    }
+    syncBannerHeight();
+    window.addEventListener('resize', syncBannerHeight);
+    window.addEventListener('load', syncBannerHeight);
+
     // Nav scroll state
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
