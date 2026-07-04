@@ -1386,6 +1386,207 @@
       line-height: 1.8;
 
     }
+
+    .features-note {
+
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 14px;
+
+      margin-top: 18px;
+
+      padding: 18px 20px;
+
+      border: 1px solid var(--accent-line);
+
+      border-right: 4px solid var(--accent);
+
+      background: var(--accent-dim);
+
+      border-radius: 12px;
+
+    }
+
+    .features-icon {
+
+      color: var(--accent);
+
+      font-size: 22px;
+
+      flex-shrink: 0;
+
+      line-height: 1;
+
+    }
+
+    .features-text {
+
+      color: #f5f5f5;
+
+      font-size: 14px;
+
+      line-height: 1.8;
+
+    }
+
+    .features-text ul {
+
+      list-style: none;
+
+      padding: 0;
+
+      margin: 6px 0 0;
+
+    }
+
+    .features-text li {
+
+      position: relative;
+
+      padding-right: 18px;
+
+      margin-bottom: 6px;
+
+    }
+
+    .fabric-highlights {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .fabric-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 18px;
+      border: 1px solid var(--border-strong);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+    }
+
+    .fabric-icon {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-line);
+      color: var(--accent);
+      font-size: 15px;
+    }
+
+    .fabric-copy .en {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .fabric-copy p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .fabric-highlights {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---------- Quality promise message ---------- */
+    .quality-note {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin: 24px 0;
+      padding: 22px 24px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(169, 201, 171, 0.1), rgba(169, 201, 171, 0.02));
+      border: 1px solid var(--accent-line);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .quality-note::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(120deg, transparent 20%, rgba(169, 201, 171, 0.18) 50%, transparent 80%);
+      background-size: 200% 100%;
+      animation: qualityShine 5s ease-in-out infinite;
+    }
+
+    @keyframes qualityShine {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .quality-note-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-line);
+      color: var(--accent);
+      font-size: 18px;
+    }
+
+    .quality-note-text {
+      font-size: 14.5px;
+      line-height: 1.9;
+      color: var(--text-primary);
+    }
+
+    .quality-note-text strong {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .quality-note::before {
+        animation: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .quality-note {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+
+    .features-text li::before {
+
+      content: '•';
+
+      position: absolute;
+
+      right: 0;
+
+      color: var(--accent);
+
+    }
   </style>
 </head>
 
@@ -1451,7 +1652,7 @@
             </div>
             <div>
               <div class="swatch" style="background:#f2f1ec" data-color="white" title="White"></div>
-              <div class="swatch-label">WHITE</div>
+              <div class="swatch-label">OFF-WHITE</div>
             </div>
             <div>
               <div class="swatch" style="background:#1e3327" data-color="dark-green" title="Dark Green"></div>
@@ -1636,6 +1837,48 @@
           <br>
           <hr>
           <br>
+
+          <div class="quality-note reveal">
+            <div class="quality-note-icon">
+              <i class="fa-solid fa-leaf"></i>
+            </div>
+            <p class="quality-note-text">
+              عزيزي العميل، يسعدنا أن نطلعكم على أن منتجنا مصنوع من <strong>أجود أنواع القطن</strong>، وقد مرّ بعدة
+              مراحل تصنيع دقيقة تشمل إضافة الإنزيمات والمعالجة الكاملة، لنقدّم لكم منتجًا يليق بذوقكم الرفيع.
+            </p>
+          </div>
+
+          <div class="fabric-highlights">
+            <div class="fabric-item">
+              <span class="fabric-icon"><i class="fa-solid fa-leaf"></i></span>
+              <div class="fabric-copy">
+                <span class="en">Soft as Silk</span>
+                <p>ملمس حريري ناعم على البشرة لراحة تدوم طوال اليوم.</p>
+              </div>
+            </div>
+            <div class="fabric-item">
+              <span class="fabric-icon"><i class="fa-solid fa-wind"></i></span>
+              <div class="fabric-copy">
+                <span class="en">Breathable &amp; Cooling</span>
+                <p>خامة تساعد على التهوية والشعور بالانتعاش أثناء العمل.</p>
+              </div>
+            </div>
+            <div class="fabric-item">
+              <span class="fabric-icon"><i class="fa-solid fa-shield-halved"></i></span>
+              <div class="fabric-copy">
+                <span class="en">Fade &amp; Shrink Resistant</span>
+                <p>مقاوم للانكماش، الوبرة، وبهتان اللون حتى مع الاستخدام المتكرر.</p>
+              </div>
+            </div>
+            <div class="fabric-item">
+              <span class="fabric-icon"><i class="fa-solid fa-stethoscope"></i></span>
+              <div class="fabric-copy">
+                <span class="en">Designed for Long Shifts</span>
+                <p>مرونة وراحة مثالية للأطباء، التمريض، والصيادلة وجميع العاملين بالقطاع الطبي.</p>
+              </div>
+            </div>
+          </div>
+
           <div class="warning-note">
 
             <i class="fa-solid fa-soap"></i>
@@ -1653,6 +1896,25 @@
             </div>
 
           </div>
+          <!-- <div class="features-note">
+
+            <i class="fa-solid fa-star features-icon"></i>
+
+            <div class="features-text">
+
+              <strong>مميزات المنتج</strong>
+
+              <ul>
+                <li>ياقة دائرية (Crew Neck) أنيقة ومريحة</li>
+                <li>شعار مطبوع بتصميم بسيط وفاخر</li>
+                <li>خياطة مسطحة (Flat Seams) تمنع الاحتكاك والتهيج</li>
+                <li>قصة مريحة (Comfort Fit) تسمح بحرية الحركة</li>
+                <li>حافة سفلية منحنية (Curved Hem) لمظهر عصري</li>
+                <li>خط عاكس للضوء لمزيد من الأمان أثناء المناوبات الليلية</li>
+              </ul>
+            </div>
+
+          </div> -->
         </div>
       </div>
     </div>
