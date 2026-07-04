@@ -1454,24 +1454,28 @@
               <div class="swatch-label">WHITE</div>
             </div>
             <div>
-              <div class="swatch" style="background:#1f2b45" data-color="navy" title="Navy"></div>
-              <div class="swatch-label">NAVY</div>
+              <div class="swatch" style="background:#1e3327" data-color="dark-green" title="Dark Green"></div>
+              <div class="swatch-label">D. GREEN</div>
+            </div>
+            <div>
+              <div class="swatch" style="background:#3a3a3a" data-color="dark-gray" title="Dark Gray"></div>
+              <div class="swatch-label">D. GRAY</div>
             </div>
             <div>
               <div class="swatch" style="background:#5c6b4a" data-color="light-olive" title="Light Olive"></div>
               <div class="swatch-label">L. OLIVE</div>
             </div>
             <div>
-              <div class="swatch" style="background:#3c4a30" data-color="dark-olive" title="Dark Olive"></div>
-              <div class="swatch-label">D. OLIVE</div>
+              <div class="swatch" style="background:#d98ea3" data-color="pink" title="Pink"></div>
+              <div class="swatch-label">PINK</div>
             </div>
             <div>
-              <div class="swatch" style="background:#6d1f2a" data-color="burgundy" title="Burgundy"></div>
-              <div class="swatch-label">BURGUNDY</div>
+              <div class="swatch" style="background:#1f2b45" data-color="navy" title="Navy"></div>
+              <div class="swatch-label">NAVY</div>
             </div>
             <div>
-              <div class="swatch" style="background:#1e3a6e" data-color="royal-blue" title="Royal Blue"></div>
-              <div class="swatch-label">ROYAL BLUE</div>
+              <div class="swatch" style="background:#4a3323" data-color="brown" title="Brown"></div>
+              <div class="swatch-label">BROWN</div>
             </div>
           </div>
         </div>
@@ -1789,16 +1793,16 @@
     }, { threshold: 0.15 });
     revealEls.forEach(el => io.observe(el));
     // Same color set for both genders. Men images live in images/men/<color>/
-    // and women images live in images/women/<color>/. Extensions kept as
-    // they were per color (black & white are .webp, the rest are .jpg).
+    // and women images live in images/women/<color>/. All colors use .webp.
     const colorDefs = [
       { name: "black", ext: "webp" },
       { name: "white", ext: "webp" },
-      { name: "navy", ext: "jpg" },
-      { name: "light-olive", ext: "jpg" },
-      { name: "dark-olive", ext: "jpg" },
-      { name: "burgundy", ext: "jpg" },
-      { name: "royal-blue", ext: "jpg" }
+      { name: "dark-green", ext: "webp" },
+      { name: "dark-gray", ext: "webp" },
+      { name: "light-olive", ext: "webp" },
+      { name: "pink", ext: "webp" },
+      { name: "navy", ext: "webp" },
+      { name: "brown", ext: "webp" }
     ];
 
     function buildColorImages(gender) {
