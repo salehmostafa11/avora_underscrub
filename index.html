@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 
 <head>
   <meta charset="UTF-8">
@@ -39,6 +39,45 @@
       --accent-line: rgba(169, 201, 171, 0.35);
       --maxw: 1180px;
       --radius: 14px;
+      --surface: rgba(255, 255, 255, 0.03);
+      --nav-bg: rgba(8, 9, 10, 0.7);
+      --nav-bg-scrolled: rgba(8, 9, 10, 0.88);
+    }
+
+    /* ---------- Light theme ---------- */
+    html[data-theme="light"] {
+      --bg: #f7f8f4;
+      --bg-2: #f0f2ec;
+      --bg-elev: #ffffff;
+      --bg-elev-2: #eef1ea;
+      --border: rgba(10, 20, 15, 0.09);
+      --border-strong: rgba(10, 20, 15, 0.16);
+      --text-primary: #14170f;
+      --text-muted: #565a4f;
+      --text-dim: #8a8f82;
+      --accent: #4f7a54;
+      --accent-2: #3c6440;
+      --accent-dim: rgba(79, 122, 84, 0.12);
+      --accent-line: rgba(79, 122, 84, 0.35);
+      --surface: rgba(10, 20, 15, 0.035);
+      --nav-bg: rgba(247, 248, 244, 0.75);
+      --nav-bg-scrolled: rgba(247, 248, 244, 0.92);
+    }
+
+    html[data-theme="light"] .big-number .num {
+      background: linear-gradient(180deg, var(--text-primary), var(--accent) 140%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    html[data-theme="light"] .garment-visual {
+      background: linear-gradient(160deg, var(--bg-elev), var(--bg-elev-2));
+    }
+
+    body,
+    .nav,
+    .top-banner {
+      transition: background-color .35s ease, color .35s ease, border-color .35s ease;
     }
 
     * {
@@ -125,7 +164,7 @@
       font-size: 11px;
       letter-spacing: 3px;
       color: var(--accent);
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--surface);
       border: 1px solid var(--border-strong);
       padding: 9px 20px;
       border-radius: 999px;
@@ -263,7 +302,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 20px 40px;
-      background: rgba(8, 9, 10, 0.7);
+      background: var(--nav-bg);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid transparent;
       transition: border-color .3s ease, background .3s ease, top .25s ease;
@@ -271,7 +310,7 @@
 
     .nav.scrolled {
       border-bottom-color: var(--border);
-      background: rgba(8, 9, 10, 0.88);
+      background: var(--nav-bg-scrolled);
     }
 
     .nav-logo {
@@ -297,6 +336,59 @@
       border-color: var(--accent-line);
       color: var(--accent);
       background: var(--accent-dim);
+    }
+
+    /* ---------- Theme toggle ---------- */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 4px;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      background: var(--surface);
+    }
+
+    .theme-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--text-dim);
+      font-size: 13px;
+      cursor: pointer;
+      transition: background .25s ease, color .25s ease;
+    }
+
+    .theme-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .theme-btn.active {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    @media (max-width: 560px) {
+      .nav-actions {
+        gap: 8px;
+      }
+
+      .theme-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 11px;
+      }
     }
 
     /* ================= HERO ================= */
@@ -552,7 +644,7 @@
     }
 
     .garment-visual {
-      background: linear-gradient(160deg, #191c1a, #0c0e0d);
+      background: linear-gradient(160deg, var(--bg-elev), var(--bg-2));
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 40px;
@@ -1379,7 +1471,7 @@
 
     .warning-text {
 
-      color: #f5f5f5;
+      color: (var(--text-muted));
 
       font-size: 14px;
 
@@ -1464,7 +1556,7 @@
       gap: 12px;
       padding: 16px 18px;
       border: 1px solid var(--border-strong);
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--surface);
       border-radius: 12px;
     }
 
@@ -1712,7 +1804,17 @@
   </div>
 
   <nav class="nav" id="nav">
-    <a href="https://wa.link/aruqr6" class="nav-cta en" style="background-color: #25D366;">ORDER NOW</a>
+    <div class="nav-actions">
+      <div class="theme-toggle" id="themeToggle" role="group" aria-label="Toggle light / dark mode">
+        <button type="button" class="theme-btn" data-theme-btn="light" aria-label="Light mode" aria-pressed="false">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+        <button type="button" class="theme-btn" data-theme-btn="dark" aria-label="Dark mode" aria-pressed="false">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+      <a href="https://wa.link/aruqr6" class="nav-cta en" style="background-color: #25D366;">ORDER NOW</a>
+    </div>
     <div class="nav-logo en" style="font-family: Fauna;">AVORA</div>
   </nav>
 
@@ -2147,6 +2249,45 @@
   </div>
 
   <script>
+    // ---------- Theme (light / dark) ----------
+    (function () {
+      const root = document.documentElement;
+      const buttons = document.querySelectorAll('[data-theme-btn]');
+
+      function getStoredTheme() {
+        try {
+          return localStorage.getItem('avora-theme');
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function storeTheme(theme) {
+        try {
+          localStorage.setItem('avora-theme', theme);
+        } catch (e) {
+          /* ignore (private browsing, etc.) */
+        }
+      }
+
+      function applyTheme(theme) {
+        root.setAttribute('data-theme', theme);
+        buttons.forEach(btn => {
+          const isActive = btn.dataset.themeBtn === theme;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-pressed', String(isActive));
+        });
+        storeTheme(theme);
+      }
+
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      applyTheme(getStoredTheme() || (prefersLight ? 'light' : 'dark'));
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => applyTheme(btn.dataset.themeBtn));
+      });
+    })();
+
     // Top delivery banner: keep nav/hero offset in sync with its real
     // rendered height (it can wrap to two lines on small screens).
     const topBanner = document.getElementById('topBanner');
