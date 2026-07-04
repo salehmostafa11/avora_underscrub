@@ -1502,7 +1502,121 @@
       }
     }
 
-    /* ---------- Quality promise message ---------- */
+    #mainImageFrame {
+      cursor: zoom-in;
+      position: relative;
+    }
+
+    #mainImageFrame .zoom-hint {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(8, 9, 10, 0.6);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      font-size: 14px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .25s ease, transform .25s ease, background .25s ease, color .25s ease;
+      pointer-events: none;
+    }
+
+    #mainImageFrame:hover .zoom-hint {
+      opacity: 1;
+      transform: translateY(0);
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-color: var(--accent-line);
+    }
+
+    /* Touch devices have no hover — show the hint by default */
+    @media (hover: none) {
+      #mainImageFrame .zoom-hint {
+        opacity: 1;
+        transform: translateY(0);
+        background: var(--accent-dim);
+        color: var(--accent);
+        border-color: var(--accent-line);
+      }
+    }
+
+    /* ---------- Lightbox ---------- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6, 7, 7, 0.92);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s ease, visibility 0s linear .3s;
+      padding: 40px;
+    }
+
+    .lightbox.is-open {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity .3s ease, visibility 0s linear 0s;
+    }
+
+    .lightbox-img {
+      max-width: min(88vw, 720px);
+      max-height: 86vh;
+      border-radius: 10px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+      transform: scale(.94);
+      transition: transform .3s ease;
+      background: var(--bg-elev);
+    }
+
+    .lightbox.is-open .lightbox-img {
+      transform: scale(1);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 22px;
+      right: 28px;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      font-size: 18px;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease, transform .2s ease;
+    }
+
+    .lightbox-close:hover {
+      background: var(--accent-dim);
+      color: var(--accent);
+      transform: rotate(90deg);
+    }
+
+    @media (max-width: 640px) {
+      .lightbox {
+        padding: 20px;
+      }
+
+      .lightbox-close {
+        top: 14px;
+        right: 16px;
+      }
+    }
     .quality-note {
       position: relative;
       display: flex;
@@ -1639,6 +1753,7 @@
           <div class="img-frame" id="mainImageFrame">
             <img id="mainImage" src="images/men/black/1.webp" alt="Product">
             <div class="error-overlay"><span class="error-brand">AVORA</span></div>
+            <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
           </div>
 
           <div id="thumbnails" class="thumbnails"></div>
@@ -1652,7 +1767,7 @@
             </div>
             <div>
               <div class="swatch" style="background:#f2f1ec" data-color="white" title="White"></div>
-              <div class="swatch-label">OFF-WHITE</div>
+              <div class="swatch-label">WHITE</div>
             </div>
             <div>
               <div class="swatch" style="background:#1e3327" data-color="dark-green" title="Dark Green"></div>
@@ -2026,6 +2141,11 @@
 
   <footer class="en">© 2026 <span style="font-family: Fauna;">AVORA</span> — All rights reserved.</footer>
 
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-close" id="lightboxClose"><i class="fa-solid fa-xmark"></i></div>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Product zoom">
+  </div>
+
   <script>
     // Top delivery banner: keep nav/hero offset in sync with its real
     // rendered height (it can wrap to two lines on small screens).
@@ -2229,6 +2349,36 @@
 
     menBtn.addEventListener("click", () => setGender("men"));
     womenBtn.addEventListener("click", () => setGender("women"));
+
+    // ---------- Lightbox (click main image to zoom) ----------
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+    function openLightbox() {
+      if (mainImageFrame.classList.contains("is-error")) return; // nothing valid to zoom
+      lightboxImg.src = mainImage.src;
+      lightbox.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("is-open");
+      document.body.style.overflow = "";
+    }
+
+    mainImageFrame.addEventListener("click", openLightbox);
+    lightboxClose.addEventListener("click", closeLightbox);
+
+    // Click on the dark backdrop (not the image itself) closes it
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Escape key closes it
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeLightbox();
+    });
   </script>
 
   <a href="https://wa.link/aruqr6" class="whatsapp-float" target="_blank" aria-label="Order on WhatsApp">
